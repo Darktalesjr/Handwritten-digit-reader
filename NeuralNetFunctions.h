@@ -12,13 +12,16 @@ void evolve(automata* unit)
     {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];
-        cout << "e" << endl;
 
         int ma = p1->neuralNet.actDim.size(), mi = p2->neuralNet.actDim.size();
         if (p2->neuralNet.actDim.size() > p1->neuralNet.actDim.size()) ma = p1->neuralNet.actDim.size(), mi = p2->neuralNet.actDim.size(), swap(p1, p2);
         unit[ct0].neuralNet.actDim.resize(ma);
-        cout << "a" << endl;
-        if (bool(rand() % 2))
+        
+    }
+}
+
+/*
+if (bool(rand() % 2))
         {
             unit[ct0].neuralNet.actDim[0] = p1->neuralNet.actDim[0];
             unit[ct0].neuralNet.activation[0].resize(unit[ct0].neuralNet.actDim[0]);
@@ -33,6 +36,7 @@ void evolve(automata* unit)
                     }
                     else unit[ct0].neuralNet.weight[0][ct1][ct2] = p1->neuralNet.weight[0][ct1][ct2];
                 }
+                unit[ct0].neuralNet.bias[0][ct1] = p1->neuralNet.bias[0][ct1];
             }
         }
         else
@@ -47,9 +51,12 @@ void evolve(automata* unit)
                     if (bool(rand() % 2) && 0 < p1->neuralNet.activation[0].size())
                     {
                         unit[ct0].neuralNet.weight[0][ct1][ct2] = p2->neuralNet.weight[0][ct1][ct2];
+                        unit[ct0].neuralNet.bias[0][ct1] = p2->neuralNet.bias[0][ct1];
                     }
                     else unit[ct0].neuralNet.weight[0][ct1][ct2] = p1->neuralNet.weight[0][ct1][ct2];
+                    unit[ct0].neuralNet.bias[0][ct1] = p1->neuralNet.bias[0][ct1];
                 }
+                unit[ct0].neuralNet.bias[0][ct1] = p2->neuralNet.bias[0][ct1];
             }
         }
         for (int ct = 1; ct < mi; ct++)
@@ -67,12 +74,12 @@ void evolve(automata* unit)
                     {
                         if (ct1 < p1->neuralNet.activation[ct].size() && ct2 < p1->neuralNet.weight[ct][ct1].size())
                         {
-                            if (bool(rand() % 2)) unit[ct0].neuralNet.weight[ct][ct1][ct2] = p2->neuralNet.weight[ct][ct1][ct2];
-                            else unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                            if (bool(rand() % 2)) { unit[ct0].neuralNet.weight[ct][ct1][ct2] = p2->neuralNet.weight[ct][ct1][ct2]; unit[ct0].neuralNet.bias[ct][ct1] = p2->neuralNet.bias[ct][ct1]; }
+                            else { unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2]; unit[ct0].neuralNet.bias[ct][ct1] = p2->neuralNet.bias[ct][ct1]; }
                         }
-                        else unit[ct0].neuralNet.weight[ct][ct1][ct2] = p2->neuralNet.weight[ct][ct1][ct2];
+                        else { unit[ct0].neuralNet.weight[ct][ct1][ct2] = p2->neuralNet.weight[ct][ct1][ct2]; unit[ct0].neuralNet.bias[ct][ct1] = p2->neuralNet.bias[ct][ct1]; }
                     }
-                    else unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                    else{ unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2]; unit[ct0].neuralNet.bias[ct][ct1] = p1->neuralNet.bias[ct][ct1]; }
                 }
             }
         }
@@ -84,12 +91,7 @@ void evolve(automata* unit)
             for (int ct1 = 0; ct1 < unit[ct0].neuralNet.actDim[ct]; ct1++)
             {
                 unit[ct0].neuralNet.weight[ct][ct1].resize(unit[ct0].neuralNet.actDim[ct]);
-                for (int ct2 = 0; ct2 < unit[ct0].neuralNet.actDim[ct - 1]; ct2++)
-                {
-                    unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
-
-                }
+                for (int ct2 = 0; ct2 < unit[ct0].neuralNet.actDim[ct - 1]; ct2++) { unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2]; unit[ct0].neuralNet.bias[ct][ct1] = p1->neuralNet.bias[ct][ct1];}
             }
         }
-    }
-}
+        */

@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
             else ct++;
         }
         //for (int ct = 0; ct < N; ct++){unit[ct].player.initPlayer();}
-        //evolve(unit);
+        evolve(unit);
     }
 
     SDL_DestroyRenderer(renderer);

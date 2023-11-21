@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
         {
             if (unit[ct].neuralNet.fitness < unit[ct - 1].neuralNet.fitness) {
                 swap(&unit[ct], &unit[ct - 1]);
-                if (ct > 0) ct--;
+                if (ct > 1) ct--;
             }
             else ct++;
         }

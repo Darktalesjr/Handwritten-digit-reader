@@ -23,14 +23,8 @@ struct player
     float ax, ay;
     bool j;
 
-    void initPlayer()
-    {
-        x = 320, y = L, ax = 0, ay = 0;
-    }
-    player()
-    {
-        initPlayer();
-    }
+    void initPlayer() { x = 320, y = L, ax = 0, ay = 0; }
+    player() { initPlayer(); }
 };
 
 struct nNet

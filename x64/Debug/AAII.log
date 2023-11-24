@@ -1,1 +1,2 @@
-﻿LINK : fatal error LNK1104: cannot open file 'dependencies\SDL2\SDL2.lib'
+﻿  Source.cpp
+  AAII.vcxproj -> C:\Users\nicol\source\repos\AAII\x64\Debug\AAII.exe

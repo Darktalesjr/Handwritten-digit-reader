@@ -62,16 +62,8 @@ int main(int argc, char* argv[])
             }
             SDL_RenderPresent(renderer);
         }
-
         for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = GOAL[0] - unit[ct].player.x;
-        for (int ct = 1; ct < N;)
-        {
-            if (unit[ct].neuralNet.fitness < unit[ct - 1].neuralNet.fitness) {
-                swap(&unit[ct], &unit[ct - 1]);
-                if (ct > 1) ct--;
-            }
-            else ct++;
-        }
+        sort(unit);
         evolve(unit);
     }
 

@@ -183,6 +183,18 @@ inline void swap(automata* automata1,  automata* automata2)
     automata1->neuralNet.bias.swap(automata2->neuralNet.bias);
     swap(automata1->neuralNet.fitness, automata2->neuralNet.fitness);
 }
+
+inline void sort(automata* source) {
+    for (int ct = 1; ct < N;)
+    {
+        if (source[ct].neuralNet.fitness < source[ct - 1].neuralNet.fitness) {
+            swap(&source[ct], &source[ct - 1]);
+            if (ct > 1) ct--;
+        }
+        else ct++;
+    }
+}
+
 /*
 Uint8 n = 0;
         double m = neuralNet.output[0];

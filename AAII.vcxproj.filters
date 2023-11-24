@@ -20,17 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="dependencies\SDL2\SDL2.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="dependencies\SDL2\SDL2main.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="dependencies\SDL2_image\SDL2_image.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Automata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,5 +29,19 @@
     <ClInclude Include="NeuralNetFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="dependencies\SDL2.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="dependencies\SDL2_image.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="dependencies\SDL2_ttf.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="dependencies\SDL2main.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

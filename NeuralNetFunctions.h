@@ -84,6 +84,12 @@ void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
         SDL_RenderDrawLine(renderer, wDiff * 2, ((ct - (unit->neuralNet.actDim[0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff, ((ct1 - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
     }
 
+    for (int ct0 = 1; ct0 < unit->neuralNet.actDim.size(); ct0++)for (int ct = 0; ct < unit->neuralNet.actDim[ct0]; ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct0 - 1]; ct1++) {
+        cout << ct1 << " " << unit->neuralNet.weight[0][1].size() << " " << unit->neuralNet.actDim[ct0 - 1] << endl;
+        (unit->neuralNet.weight[ct0][ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
+        SDL_RenderDrawLine(renderer, wDiff * (ct0 + 1), ((ct - (unit->neuralNet.actDim[ct0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff * (ct0 + 2), ((ct1 - (unit->neuralNet.actDim[ct0 - 1] / 2.0f)) * hDiff) + HEI + (hDiff / 2));
+    }
+
     for (int ct = 0; ct < unit->neuralNet.actDim.back(); ct++)for (int ct1 = 0; ct1 < OEXT; ct1++) {
         (unit->neuralNet.weight.back()[ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
         SDL_RenderDrawLine(renderer, WIDTH - wDiff * 2, ((ct - (unit->neuralNet.actDim.back() / 2.0f)) * hDiff) + HEI + (hDiff / 2), WIDTH - wDiff, ((ct1 - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));

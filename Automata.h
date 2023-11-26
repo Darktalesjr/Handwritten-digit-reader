@@ -2,17 +2,19 @@
 #include "includes.h"
 
 const float ACTIVATION_THRESHOLD = 0.5;
-const int WIDTH = 640, HEIGHT = 640;
-const int N = 63, FITTEST = 9;
+const int WIDTH = 640, HEIGHT = 480;
+const int N = 20, FITTEST = 9;
 const int EXT = 20;
+const int IEXT = 4, OEXT = 3;
+const int MUTRATE = 1;
+const Uint8 FACTDIM = 7, FACTDEPTH = 7;
+
+const int WID = WIDTH / 2, HEI = HEIGHT / 2;
 const int TXE = EXT / 2;
-const int NEXT = 40, NLENGHT = 30, IEXT = 4, OEXT = 3;
 const int LIMIT = HEIGHT * 0.667;
 const int L = LIMIT - TXE;
+
 const int GOAL[2]{ WIDTH - TXE, 306 };
-const int MUTRATE = 1;
-const Uint8 FACTDIM = 10;
-const Uint8 FACTDEPTH = 10;
 
 float actF(float x);
 float sactF(float x);
@@ -46,55 +48,31 @@ struct nNet
         actDim.resize(FACTDEPTH);
         bias.resize(FACTDEPTH + 1);
         weight.resize(FACTDEPTH + 1);
-        for (int ct = 0; ct < FACTDEPTH; ct++)
-        {
+        for (int ct = 0; ct < FACTDEPTH; ct++) {
             activation[ct].resize(FACTDIM);
             bias[ct].resize(FACTDIM);
             weight[ct].resize(FACTDIM);
             actDim[ct] = FACTDIM;
-            if (ct == 0)
-            {
-                for (int ct1 = 0; ct1 < FACTDIM; ct1++)
-                {
-                    weight[0][ct1].resize(IEXT);
-                }
-            }
-            else
-            {
-                for (int ct1 = 0; ct1 < FACTDIM; ct1++)
-                {
-                    weight[ct][ct1].resize(FACTDIM);
-                }
-            }
+            if (ct == 0) for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[0][ct1].resize(IEXT);
+            else for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[ct][ct1].resize(FACTDIM);
         }
         weight.back().resize(OEXT);
-        for (int ct1 = 0; ct1 < OEXT; ct1++)
-        {
-            weight.back()[ct1].resize(FACTDIM);
-        }
+        for (int ct1 = 0; ct1 < OEXT; ct1++) weight.back()[ct1].resize(FACTDIM);
         bias.back().resize(OEXT);
     }
 
     void allocV()
     {
-
         int lgt = actDim.size();
         activation.resize(lgt);
         bias.resize(lgt);
         weight.resize(lgt);
-
         for (int ct = 0; ct < lgt; ct++)
         {
             activation[ct].resize(actDim[ct]);
             bias[ct].resize(actDim[ct]);
             weight[ct].resize(actDim[ct]);
-            if (ct != 0)
-            {
-                for (int ct1 = 0; ct1 < actDim[ct]; ct1++)
-                {
-                    weight[ct][ct1].resize(actDim[ct]);
-                }
-            }
+            if (ct != 0) for (int ct1 = 0; ct1 < actDim[ct]; ct1++) weight[ct][ct1].resize(actDim[ct]);
         }
         bias.back().resize(OEXT);
     }
@@ -103,7 +81,7 @@ struct nNet
     {
         for (int ct = 0; ct < activation.size(); ct++) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) activation[ct][ct1] = 0;
         for (int ct = 0; ct < bias.size(); ct++) for (int ct1 = 0; ct1 < bias[ct].size(); ct1++) bias[ct][ct1] = 0;
-        for (int ct = 0; ct < weight[0].size(); ct++) for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) weight[0][ct][ct1] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 1;
+        for (int ct = 0; ct < weight[0].size(); ct++) for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) weight[0][ct][ct1] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
         for (int ct = 1; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = ((((float(rand() % 1018)) + float(rand() % 1018))) / 1018) - 1;
     }
 
@@ -117,7 +95,7 @@ struct nNet
 };
 
 
-struct automata
+struct Automata
 {
     player player;
     nNet neuralNet;
@@ -170,21 +148,21 @@ struct automata
         }
     }
 
-    automata()
+    Automata()
     {
         neuralNet.initV();
         neuralNet.initNNet();
     }
 };
 
-inline void swap(automata* automata1,  automata* automata2)
+inline void swap(Automata* automata1,  Automata* automata2)
 {
     automata1->neuralNet.weight.swap(automata2->neuralNet.weight);
     automata1->neuralNet.bias.swap(automata2->neuralNet.bias);
     swap(automata1->neuralNet.fitness, automata2->neuralNet.fitness);
 }
 
-inline void sort(automata* source) {
+inline void sort(Automata* source) {
     for (int ct = 1; ct < N;)
     {
         if (source[ct].neuralNet.fitness < source[ct - 1].neuralNet.fitness) {

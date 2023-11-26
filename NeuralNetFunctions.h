@@ -1,22 +1,132 @@
 #include "includes.h"
 
 #include "automata.h"
+#include "SDL_ttf.h"
 
-float actF(float x) {return(max(float(x / 10), x));}
-float sactF(float x) {return(tanh(x));}//1 / (1 + exp(-x))
+TTF_Font* font = TTF_OpenFont("Sources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 24);
 
-void evolve(automata* unit)
+float reLU(float x) { return(max(float(x / 10), x)); }
+float sigmoid(float x) { return (1 / (1 + exp(-x))); }
+
+float actF(float x) { return(reLU(x)); }
+float sactF(float x) { return(tanh(x)); }
+
+template<typename t> int max(vector<t> val) {//returns the largest element of a vector
+    int m = 0;
+    for (auto n : val) (n > m) ? m = n : m = m;
+    return m;
+}
+
+void drawCircle(SDL_Renderer* renderer, int xc, int yc, int r)
 {
-    automata* p1, * p2;
-    for (int ct0 = FITTEST; ct0 < N; ct0++)
+    int x = 0, y = r;
+    int d = 3 - 2 * r;
+
+    while (y >= x)
     {
+        SDL_RenderDrawPoint(renderer, xc + x, yc + y);
+        SDL_RenderDrawPoint(renderer, xc - x, yc + y);
+        SDL_RenderDrawPoint(renderer, xc + x, yc - y);
+        SDL_RenderDrawPoint(renderer, xc - x, yc - y);
+        SDL_RenderDrawPoint(renderer, xc + y, yc + x);
+        SDL_RenderDrawPoint(renderer, xc - y, yc + x);
+        SDL_RenderDrawPoint(renderer, xc + y, yc - x);
+        SDL_RenderDrawPoint(renderer, xc - y, yc - x);
+
+        x++;
+
+        if (d > 0)
+        {
+            y--;
+            d = d + 4 * (x - y);
+        }
+        else d = d + 4 * x;
+    }
+}
+
+void drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, int radius)
+{
+    int r2 = radius * radius;
+    int area = r2 << 2;
+    int rr = radius << 1;
+
+    for (int i = 0; i < area; i++)
+    {
+        int tx = (i % rr) - radius;
+        int ty = (i / rr) - radius;
+
+        if (tx * tx + ty * ty <= r2) SDL_RenderDrawPoint(renderer, centreX + tx, centreY + ty);
+    }
+}
+
+void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
+{
+    int wDiff = WIDTH / (unit->neuralNet.actDim.size()+3);
+    int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim),int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
+
+    char source[] = "+";
+
+    SDL_Surface* surfaceMessage;
+    SDL_Texture* text;
+    SDL_Color color = { 255, 255, 255, 255 };
+
+    surfaceMessage = TTF_RenderText_Solid(font, source, color);
+    text = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+    SDL_Rect Message_rect = { int(HEIGHT * 0.1),int(HEIGHT * 0.1) - 24,12 * int(size(source)),24 };
+
+    SDL_RenderCopy(renderer, text, NULL, &Message_rect);
+
+    for (int ct1 = 0; ct1 < IEXT; ct1++) for (int ct = 0; ct < unit->neuralNet.actDim[0]; ct++) {
+        (unit->neuralNet.weight[0][ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
+        SDL_RenderDrawLine(renderer, wDiff * 2, ((ct - (unit->neuralNet.actDim[0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff, ((ct1 - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
+    }
+
+    for (int ct = 0; ct < unit->neuralNet.actDim.back(); ct++)for (int ct1 = 0; ct1 < OEXT; ct1++) {
+        (unit->neuralNet.weight.back()[ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
+        SDL_RenderDrawLine(renderer, WIDTH - wDiff * 2, ((ct - (unit->neuralNet.actDim.back() / 2.0f)) * hDiff) + HEI + (hDiff / 2), WIDTH - wDiff, ((ct1 - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
+    }
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+    for (int ct = 0; ct < IEXT; ct++) {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        drawFilledCircle(renderer, wDiff, ((ct - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        drawCircle(renderer, wDiff, ((ct - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+    }
+
+    for (int ct = 0; ct < unit->neuralNet.actDim.size(); ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct]; ct1++) {
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        drawFilledCircle(renderer, wDiff * (ct + 2), ((ct1 - (unit->neuralNet.actDim[ct] / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        drawCircle(renderer, wDiff * (ct + 2), ((ct1 - (unit->neuralNet.actDim[ct] / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+    }
+
+    for (int ct = 0; ct < OEXT; ct++) {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        drawFilledCircle(renderer, WIDTH - wDiff, ((ct - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        drawCircle(renderer, WIDTH - wDiff, ((ct - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+    }
+    string str1 = " ";
+    cout << str1.length();
+}
+
+void evolve(Automata* unit)
+{
+    sort(unit);
+    Automata* p1, * p2;
+    for (int ct0 = FITTEST; ct0 < N; ct0++)
+    {   
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];
-
+        
         int ma = p1->neuralNet.actDim.size(), mi = p2->neuralNet.actDim.size();
         if (p2->neuralNet.actDim.size() > p1->neuralNet.actDim.size()) ma = p1->neuralNet.actDim.size(), mi = p2->neuralNet.actDim.size(), swap(p1, p2);
-        unit[ct0].neuralNet.actDim.resize(ma);
-        
+        //unit[ct0].neuralNet.actDim.resize(ma);
     }
 }
 

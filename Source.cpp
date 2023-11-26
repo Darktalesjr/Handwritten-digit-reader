@@ -13,14 +13,16 @@ int main(int argc, char* argv[])
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_HIDDEN);
+
+    netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN);
     netRenderer = SDL_CreateRenderer(netWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    automata* unit = new automata[N]();
+    Automata* unit = new Automata[N]();
     SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
-    bool exit = true;
-    bool w = false, a = false, s = false, d = false;
+
+    bool exit = true, w = false, a = false, s = false, d = false;
+
     while (exit) {
         for (int genTime = 0; genTime < 500; genTime++)
         {
@@ -37,7 +39,16 @@ int main(int argc, char* argv[])
                     case SDL_WINDOWEVENT_CLOSE:
                         if (SDL_GetWindowFromID(event.window.windowID) == window)exit = false;
                         else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
-                        break; 
+                        break;
+                    }
+                case SDL_KEYDOWN:
+                    switch (event.key.keysym.scancode)
+                    {
+                    case SDL_SCANCODE_I:
+                        renderDrawNet(netRenderer, netWindow, &unit[0]);
+                        SDL_ShowWindow(netWindow);
+                        SDL_RenderPresent(netRenderer);
+                        break;
                     }
                 }
             }
@@ -46,6 +57,7 @@ int main(int argc, char* argv[])
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
             SDL_RenderDrawLine(renderer, 0, LIMIT, WIDTH, LIMIT);
+
             for (int ct = 0; ct < N; ct++)
             {
                 unit[ct].player.y -= unit[ct].player.ay;
@@ -63,7 +75,6 @@ int main(int argc, char* argv[])
             SDL_RenderPresent(renderer);
         }
         for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = GOAL[0] - unit[ct].player.x;
-        sort(unit);
         evolve(unit);
     }
 

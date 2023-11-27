@@ -11,7 +11,8 @@ int main(int argc, char* argv[])
     SDL_Window* netWindow = NULL;
     SDL_Renderer* netRenderer = NULL;
     SDL_Init(SDL_INIT_VIDEO);
-    window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    TTF_Init();
+    window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN );
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN);
@@ -20,6 +21,7 @@ int main(int argc, char* argv[])
     Automata* unit = new Automata[N]();
     SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
+    font = TTF_OpenFont("Resources/Fonts/montserrat.ttf", 18 * 0.819);
 
     bool exit = true, w = false, a = false, s = false, d = false;
 
@@ -35,6 +37,7 @@ int main(int argc, char* argv[])
                 case SDL_WINDOWEVENT:
                     switch (event.window.event) {
                     case SDL_WINDOWEVENT_RESIZED:
+                        SDL_SetWindowSize(SDL_GetWindowFromID(event.window.windowID), event.window.data1, event.window.data2);
                         break;
                     case SDL_WINDOWEVENT_CLOSE:
                         if (SDL_GetWindowFromID(event.window.windowID) == window)exit = false;
@@ -52,11 +55,6 @@ int main(int argc, char* argv[])
                     }
                 }
             }
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-            SDL_RenderDrawLine(renderer, 0, LIMIT, WIDTH, LIMIT);
 
             for (int ct = 0; ct < N; ct++)
             {
@@ -69,11 +67,29 @@ int main(int argc, char* argv[])
 
                 if (unit[ct].player.x < TXE)unit[ct].player.x = TXE;
                 if (unit[ct].player.x > WIDTH - TXE)unit[ct].player.x = WIDTH - TXE;
-                objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
-                SDL_RenderDrawRect(renderer, &objRect);
             }
-            SDL_RenderPresent(renderer);
         }
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+        SDL_RenderDrawLine(renderer, 0, LIMIT, WIDTH, LIMIT);
+
+        for (int ct = 0; ct < N; ct++)
+        {
+            unit[ct].player.y -= unit[ct].player.ay;
+            if (unit[ct].player.y <= L) unit[ct].player.ay -= 0.5;
+            else unit[ct].player.y = L;
+
+            unit[ct].think();
+            unit[ct].act();
+
+            if (unit[ct].player.x < TXE)unit[ct].player.x = TXE;
+            if (unit[ct].player.x > WIDTH - TXE)unit[ct].player.x = WIDTH - TXE;
+            objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
+            SDL_RenderDrawRect(renderer, &objRect);
+        }
+        SDL_RenderPresent(renderer);
         for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = GOAL[0] - unit[ct].player.x;
         evolve(unit);
     }

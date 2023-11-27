@@ -7,7 +7,7 @@ const int N = 20, FITTEST = 9;
 const int EXT = 20;
 const int IEXT = 4, OEXT = 3;
 const int MUTRATE = 1;
-const Uint8 FACTDIM = 7, FACTDEPTH = 7;
+const Uint8 FACTDIM = 10, FACTDEPTH = 2;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
 const int TXE = EXT / 2;
@@ -134,7 +134,7 @@ struct Automata
     }
     void inline act()
     {
-        if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
+        //if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
         if (neuralNet.output[1] > ACTIVATION_THRESHOLD) player.x -= 1;
         if (neuralNet.output[2] > ACTIVATION_THRESHOLD) player.x += 1;
     }
@@ -155,7 +155,7 @@ struct Automata
     }
 };
 
-inline void swap(Automata* automata1,  Automata* automata2)
+inline void swap(Automata* automata1, Automata* automata2)
 {
     automata1->neuralNet.weight.swap(automata2->neuralNet.weight);
     automata1->neuralNet.bias.swap(automata2->neuralNet.bias);
@@ -172,26 +172,6 @@ inline void sort(Automata* source) {
         else ct++;
     }
 }
-
-/*
-Uint8 n = 0;
-        double m = neuralNet.output[0];
-        for (int ct = 1; ct < OEXT; ct++) {
-            if (neuralNet.output[ct] > m) n = ct;
-        }
-        switch (n)
-        {
-        case 0:
-            if (player.y == L)player.ay = 11;
-            break;
-        case 1:
-            player.x -= 1;
-            break;
-        case 2:
-            player.x += 1;
-            break;
-        }
-*/
 
 /*
 void player::initPlayer() { x = 320, y = L, ax = 0, ay = 0; }

@@ -7,7 +7,7 @@ const int N = 20, FITTEST = 9;
 const int EXT = 20;
 const int IEXT = 4, OEXT = 3;
 const int MUTRATE = 1;
-const Uint8 FACTDIM = 7, FACTDEPTH = 7;
+const Uint8 FACTDIM = 9, FACTDEPTH = 7;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
 const int TXE = EXT / 2;
@@ -155,7 +155,7 @@ struct Automata
     }
 };
 
-inline void swap(Automata* automata1,  Automata* automata2)
+inline void swap(Automata* automata1, Automata* automata2)
 {
     automata1->neuralNet.weight.swap(automata2->neuralNet.weight);
     automata1->neuralNet.bias.swap(automata2->neuralNet.bias);

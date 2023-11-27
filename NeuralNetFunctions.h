@@ -61,8 +61,8 @@ void drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, int radi
 
 void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
 {
-    int wDiff = WIDTH / (unit->neuralNet.actDim.size()+3);
-    int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim),int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
+    int wDiff = WIDTH / (unit->neuralNet.actDim.size() + 3);
+    int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim), int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
 
@@ -84,8 +84,13 @@ void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
         SDL_RenderDrawLine(renderer, wDiff * 2, ((ct - (unit->neuralNet.actDim[0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff, ((ct1 - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
     }
 
+    for (int ct0 = 1; ct0 < unit->neuralNet.actDim.size(); ct0++) for (int ct = 0; ct < unit->neuralNet.actDim[ct0]; ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct0 - 1]; ct1++) {
+        (unit->neuralNet.weight[ct0][ct1][ct] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[ct0][ct1][ct])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[ct0][ct1][ct]));
+        SDL_RenderDrawLine(renderer, wDiff * (ct0 + 2), ((ct - (unit->neuralNet.actDim[ct0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff * (ct0 + 1), ((ct1 - (unit->neuralNet.actDim[ct0-1] / 2.0f)) * hDiff) + HEI + (hDiff / 2));
+    }
+
     for (int ct = 0; ct < unit->neuralNet.actDim.back(); ct++)for (int ct1 = 0; ct1 < OEXT; ct1++) {
-        (unit->neuralNet.weight.back()[ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
+        (unit->neuralNet.weight.back()[ct1][ct] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight.back()[ct1][ct])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight.back()[ct1][ct]));
         SDL_RenderDrawLine(renderer, WIDTH - wDiff * 2, ((ct - (unit->neuralNet.actDim.back() / 2.0f)) * hDiff) + HEI + (hDiff / 2), WIDTH - wDiff, ((ct1 - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
     }
 
@@ -120,10 +125,10 @@ void evolve(Automata* unit)
     sort(unit);
     Automata* p1, * p2;
     for (int ct0 = FITTEST; ct0 < N; ct0++)
-    {   
+    {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];
-        
+
         int ma = p1->neuralNet.actDim.size(), mi = p2->neuralNet.actDim.size();
         if (p2->neuralNet.actDim.size() > p1->neuralNet.actDim.size()) ma = p1->neuralNet.actDim.size(), mi = p2->neuralNet.actDim.size(), swap(p1, p2);
         //unit[ct0].neuralNet.actDim.resize(ma);

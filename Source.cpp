@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
     SDL_Window* netWindow = NULL;
     SDL_Renderer* netRenderer = NULL;
     SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
     window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
@@ -22,6 +23,8 @@ int main(int argc, char* argv[])
     SDL_Event event;
 
     bool exit = true, w = false, a = false, s = false, d = false;
+
+    font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 240);
 
     while (exit) {
         for (int genTime = 0; genTime < 500; genTime++)

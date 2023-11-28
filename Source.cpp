@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
     bool exit = true, w = false, a = false, s = false, d = false;
 
-    font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 240);
+    font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 17);
 
     while (exit) {
         for (int genTime = 0; genTime < 500; genTime++)

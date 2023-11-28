@@ -5,9 +5,10 @@ const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
 const int N = 20, FITTEST = 9;
 const int EXT = 20;
-const int IEXT = 4, OEXT = 3;
-const int MUTRATE = 1;
+const int IEXT = 3, OEXT = 3;
+const int MUTRATE_NEW = 1, MUTRATE_RE = 1;
 const Uint8 FACTDIM = 10, FACTDEPTH = 2;
+const int GENTIMEMAX = 500;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
 const int TXE = EXT / 2;
@@ -19,17 +20,17 @@ const int GOAL[2]{ WIDTH - TXE, 306 };
 float actF(float x);
 float sactF(float x);
 
-struct player
+struct Player
 {
     float x, y;
     float ax, ay;
     bool j;
 
     void initPlayer() { x = 320, y = L, ax = 0, ay = 0; }
-    player() { initPlayer(); }
+    Player() { initPlayer(); }
 };
 
-struct nNet
+struct NNet
 {
     vector<float> input;
     vector<float> output;
@@ -82,10 +83,10 @@ struct nNet
         for (int ct = 0; ct < activation.size(); ct++) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) activation[ct][ct1] = 0;
         for (int ct = 0; ct < bias.size(); ct++) for (int ct1 = 0; ct1 < bias[ct].size(); ct1++) bias[ct][ct1] = 0;
         for (int ct = 0; ct < weight[0].size(); ct++) for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) weight[0][ct][ct1] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
-        for (int ct = 1; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = ((((float(rand() % 1018)) + float(rand() % 1018))) / 1018) - 1;
+        for (int ct = 1; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
     }
 
-    void copyNet(nNet source)
+    void copyNet(NNet source)
     {
         activation = source.activation;
         weight = source.weight;
@@ -97,15 +98,15 @@ struct nNet
 
 struct Automata
 {
-    player player;
-    nNet neuralNet;
+    Player player;
+    NNet neuralNet;
 
     void think()
     {
         neuralNet.input[0] = player.x;
         neuralNet.input[1] = player.y;
         neuralNet.input[2] = GOAL[0] - player.x;
-        neuralNet.input[3] = GOAL[1] - player.y;
+        //neuralNet.input[3] = GOAL[1] - player.y;
 
         float seed = 0;
 
@@ -134,7 +135,7 @@ struct Automata
     }
     void inline act()
     {
-        //if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
+        if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
         if (neuralNet.output[1] > ACTIVATION_THRESHOLD) player.x -= 1;
         if (neuralNet.output[2] > ACTIVATION_THRESHOLD) player.x += 1;
     }
@@ -143,8 +144,8 @@ struct Automata
     {
         for (int ct = 0; ct < neuralNet.activation.size(); ct++)
         {
-            if ((rand() % (1018 / MUTRATE)) == 0)neuralNet.actDim[ct]++;
-            else if (((rand() % (10180 / MUTRATE)) == 0) && neuralNet.actDim[ct] > 3)neuralNet.actDim[ct]--;
+            if ((rand() % (1018 / MUTRATE_NEW)) == 0)neuralNet.actDim[ct]++;
+            else if (((rand() % (10180 / MUTRATE_NEW)) == 0) && neuralNet.actDim[ct] > 3)neuralNet.actDim[ct]--;
         }
     }
 

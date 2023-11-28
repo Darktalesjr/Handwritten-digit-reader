@@ -15,19 +15,16 @@ int main(int argc, char* argv[])
     window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN);
-    netRenderer = SDL_CreateRenderer(netWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 17);
 
     Automata* unit = new Automata[N]();
     SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
 
-    bool exit = true, w = false, a = false, s = false, d = false;
-
-    font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 17);
+    bool exit = true, w = false, a = false, s = false, d = false, i = false;
 
     while (exit) {
-        for (int genTime = 0; genTime < 500; genTime++)
+        for (int genTime = 0; genTime < GENTIMEMAX; genTime++)
         {
             while (SDL_PollEvent(&event))
             {
@@ -40,7 +37,7 @@ int main(int argc, char* argv[])
                     case SDL_WINDOWEVENT_RESIZED:
                         break;
                     case SDL_WINDOWEVENT_CLOSE:
-                        if (SDL_GetWindowFromID(event.window.windowID) == window)exit = false;
+                        if (SDL_GetWindowFromID(event.window.windowID) == window) { exit = false; genTime = GENTIMEMAX; }
                         else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
                         break;
                     }
@@ -48,9 +45,16 @@ int main(int argc, char* argv[])
                     switch (event.key.keysym.scancode)
                     {
                     case SDL_SCANCODE_I:
-                        renderDrawNet(netRenderer, netWindow, &unit[0]);
-                        SDL_ShowWindow(netWindow);
-                        SDL_RenderPresent(netRenderer);
+                        i = !i;
+                        if(i) {
+                            netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+                            netRenderer = SDL_CreateRenderer(netWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+                        }
+                        else {
+                            SDL_DestroyRenderer(netRenderer);
+                            SDL_DestroyWindow(netWindow);
+                        }
+                        
                         break;
                     }
                 }
@@ -75,6 +79,7 @@ int main(int argc, char* argv[])
                 objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
                 SDL_RenderDrawRect(renderer, &objRect);
             }
+            if (i) renderDrawNet(netRenderer,&unit[0]);
             SDL_RenderPresent(renderer);
         }
         for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = GOAL[0] - unit[ct].player.x;

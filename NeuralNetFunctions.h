@@ -3,7 +3,8 @@
 #include "automata.h"
 #include "SDL_ttf.h"
 
-TTF_Font* font = TTF_OpenFont("Sources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 24);
+TTF_Font* font;
+const SDL_Color WHITE = { 255, 255, 255, 255 };
 
 float reLU(float x) { return(max(float(x / 10), x)); }
 float sigmoid(float x) { return (1 / (1 + exp(-x))); }
@@ -11,7 +12,7 @@ float sigmoid(float x) { return (1 / (1 + exp(-x))); }
 float actF(float x) { return(reLU(x)); }
 float sactF(float x) { return(tanh(x)); }
 
-template<typename t> int max(vector<t> val) {//returns the largest element of a vector
+template<typename t> int max(vector<t> val) { //Returns the largest element of a vector
     int m = 0;
     for (auto n : val) (n > m) ? m = n : m = m;
     return m;
@@ -64,21 +65,14 @@ void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
     int wDiff = WIDTH / (unit->neuralNet.actDim.size() + 3);
     int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim), int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
 
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
-
-    char source[] = "+";
-
+    string sSource;
+    const char* source = sSource.c_str();
     SDL_Surface* surfaceMessage;
     SDL_Texture* text;
-    SDL_Color color = { 255, 255, 255, 255 };
+    SDL_Rect messageRect;
+    int w, h;
 
-    surfaceMessage = TTF_RenderText_Solid(font, source, color);
-    text = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
-    SDL_Rect Message_rect = { int(HEIGHT * 0.1),int(HEIGHT * 0.1) - 24,12 * int(size(source)),24 };
-
-    SDL_RenderCopy(renderer, text, NULL, &Message_rect);
-
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
     for (int ct1 = 0; ct1 < IEXT; ct1++) for (int ct = 0; ct < unit->neuralNet.actDim[0]; ct++) {
         (unit->neuralNet.weight[0][ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
         SDL_RenderDrawLine(renderer, wDiff * 2, ((ct - (unit->neuralNet.actDim[0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff, ((ct1 - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
@@ -86,7 +80,7 @@ void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
 
     for (int ct0 = 1; ct0 < unit->neuralNet.actDim.size(); ct0++) for (int ct = 0; ct < unit->neuralNet.actDim[ct0]; ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct0 - 1]; ct1++) {
         (unit->neuralNet.weight[ct0][ct1][ct] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[ct0][ct1][ct])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[ct0][ct1][ct]));
-        SDL_RenderDrawLine(renderer, wDiff * (ct0 + 2), ((ct - (unit->neuralNet.actDim[ct0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff * (ct0 + 1), ((ct1 - (unit->neuralNet.actDim[ct0-1] / 2.0f)) * hDiff) + HEI + (hDiff / 2));
+        SDL_RenderDrawLine(renderer, wDiff * (ct0 + 2), ((ct - (unit->neuralNet.actDim[ct0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff * (ct0 + 1), ((ct1 - (unit->neuralNet.actDim[ct0 - 1] / 2.0f)) * hDiff) + HEI + (hDiff / 2));
     }
 
     for (int ct = 0; ct < unit->neuralNet.actDim.back(); ct++)for (int ct1 = 0; ct1 < OEXT; ct1++) {
@@ -103,11 +97,15 @@ void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
     }
 
     for (int ct = 0; ct < unit->neuralNet.actDim.size(); ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct]; ct1++) {
-
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         drawFilledCircle(renderer, wDiff * (ct + 2), ((ct1 - (unit->neuralNet.actDim[ct] / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         drawCircle(renderer, wDiff * (ct + 2), ((ct1 - (unit->neuralNet.actDim[ct] / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
+
+        messageRect = { wDiff * (ct + 2), ((ct1 - (unit->neuralNet.actDim[ct] / 2.0f)) * hDiff) + HEI + (hDiff / 2), w,h };
+        surfaceMessage = TTF_RenderText_Solid(font, source, WHITE);
+        text = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+        SDL_RenderCopy(renderer, text, NULL, &messageRect);
     }
 
     for (int ct = 0; ct < OEXT; ct++) {
@@ -116,8 +114,6 @@ void renderDrawNet(SDL_Renderer* renderer, SDL_Window* window, Automata* unit)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         drawCircle(renderer, WIDTH - wDiff, ((ct - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
     }
-    string str1 = " ";
-    cout << str1.length();
 }
 
 void evolve(Automata* unit)

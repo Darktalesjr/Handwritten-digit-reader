@@ -3,11 +3,11 @@
 
 const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
-const int N = 20, FITTEST = 9;
+const int N = 200, FITTEST = 9;
 const int EXT = 20;
-const int IEXT = 3, OEXT = 3;
+const int IEXT = 1, OEXT = 3;
 const int MUTRATE_NEW = 1, MUTRATE_RE = 1;
-const Uint8 FACTDIM = 10, FACTDEPTH = 2;
+const Uint8 FACTDIM = 2, FACTDEPTH = 1;
 const int GENTIMEMAX = 500;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
@@ -15,7 +15,7 @@ const int TXE = EXT / 2;
 const int LIMIT = HEIGHT * 0.667;
 const int L = LIMIT - TXE;
 
-const int GOAL[2]{ WIDTH - TXE, 306 };
+const int GOAL[2]{ 200, 306 };
 
 float actF(float x);
 float sactF(float x);
@@ -26,7 +26,7 @@ struct Player
     float ax, ay;
     bool j;
 
-    void initPlayer() { x = 320, y = L, ax = 0, ay = 0; }
+    void initPlayer() { x = 320, y = L, ax = 0, ay = 0; j = 0; }
     Player() { initPlayer(); }
 };
 
@@ -103,10 +103,9 @@ struct Automata
 
     void think()
     {
-        neuralNet.input[0] = player.x;
-        neuralNet.input[1] = player.y;
-        neuralNet.input[2] = GOAL[0] - player.x;
-        //neuralNet.input[3] = GOAL[1] - player.y;
+        //neuralNet.input[0] = player.x;
+        //neuralNet.input[2] = player.y;
+        neuralNet.input[0] = GOAL[0] - player.x;
 
         float seed = 0;
 
@@ -135,7 +134,9 @@ struct Automata
     }
     void inline act()
     {
-        if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
+        if (neuralNet.output[0] > ACTIVATION_THRESHOLD) {
+            if (player.y == L)player.ay = 11; player.j = 1;
+        }
         if (neuralNet.output[1] > ACTIVATION_THRESHOLD) player.x -= 1;
         if (neuralNet.output[2] > ACTIVATION_THRESHOLD) player.x += 1;
     }

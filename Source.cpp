@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
                     {
                     case SDL_SCANCODE_I:
                         i = !i;
-                        if(i) {
+                        if (i) {
                             netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
                             netRenderer = SDL_CreateRenderer(netWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
                         }
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
                             SDL_DestroyRenderer(netRenderer);
                             SDL_DestroyWindow(netWindow);
                         }
-                        
+
                         break;
                     }
                 }
@@ -79,11 +79,18 @@ int main(int argc, char* argv[])
                 objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
                 SDL_RenderDrawRect(renderer, &objRect);
             }
-            if (i) renderDrawNet(netRenderer,&unit[0]);
+            if (i) renderDrawNet(netRenderer, &unit[0]);
             SDL_RenderPresent(renderer);
         }
-        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = GOAL[0] - unit[ct].player.x;
+        //for (int ct = 0; ct < N; ct++)
+        {
+            
+        }
+
+        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(GOAL[0] - unit[ct].player.x + 200 -unit[ct].player.j * 200);
         evolve(unit);
+        for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
+        for (int ct = 0; ct < N; ct++)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
     }
 
     SDL_DestroyRenderer(renderer);

@@ -65,13 +65,13 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
 {
     int wDiff = WIDTH / (unit->neuralNet.actDim.size() + 3);
     int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim), int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
-    
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
 
-    for (int ct1 = 0; ct1 < IEXT; ct1++) for (int ct = 0; ct < unit->neuralNet.actDim[0]; ct++) 
+    for (int ct1 = 0; ct1 < IEXT; ct1++) for (int ct = 0; ct < unit->neuralNet.actDim[0]; ct++)
     {
         (unit->neuralNet.weight[0][ct][ct1] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight[0][ct][ct1]));
         SDL_RenderDrawLine(renderer, wDiff * 2, ((ct - (unit->neuralNet.actDim[0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff, ((ct1 - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
@@ -82,7 +82,7 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
         SDL_RenderDrawLine(renderer, wDiff * (ct0 + 2), ((ct - (unit->neuralNet.actDim[ct0] / 2.0f)) * hDiff) + HEI + (hDiff / 2), wDiff * (ct0 + 1), ((ct1 - (unit->neuralNet.actDim[ct0 - 1] / 2.0f)) * hDiff) + HEI + (hDiff / 2));
     }
 
-    for (int ct = 0; ct < unit->neuralNet.actDim.back(); ct++)for (int ct1 = 0; ct1 < OEXT; ct1++) 
+    for (int ct = 0; ct < unit->neuralNet.actDim.back(); ct++)for (int ct1 = 0; ct1 < OEXT; ct1++)
     {
         (unit->neuralNet.weight.back()[ct1][ct] > 0) ? SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 * fabsf(unit->neuralNet.weight.back()[ct1][ct])) : SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255 * fabsf(unit->neuralNet.weight.back()[ct1][ct]));
         SDL_RenderDrawLine(renderer, WIDTH - wDiff * 2, ((ct - (unit->neuralNet.actDim.back() / 2.0f)) * hDiff) + HEI + (hDiff / 2), WIDTH - wDiff, ((ct1 - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2));
@@ -97,7 +97,7 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
     SDL_Rect messageRect;
     int w = 0, h = 0;
 
-    for (int ct = 0; ct < IEXT; ct++) 
+    for (int ct = 0; ct < IEXT; ct++)
     {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         drawFilledCircle(renderer, wDiff, ((ct - (IEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
@@ -114,7 +114,7 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
         SDL_DestroyTexture(text);
     }
 
-    for (int ct = 0; ct < unit->neuralNet.actDim.size(); ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct]; ct1++) 
+    for (int ct = 0; ct < unit->neuralNet.actDim.size(); ct++)for (int ct1 = 0; ct1 < unit->neuralNet.actDim[ct]; ct1++)
     {
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -132,7 +132,7 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
         SDL_DestroyTexture(text);
     }
 
-    for (int ct = 0; ct < OEXT; ct++) 
+    for (int ct = 0; ct < OEXT; ct++)
     {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         drawFilledCircle(renderer, WIDTH - wDiff, ((ct - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
@@ -151,24 +151,24 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
     SDL_RenderPresent(renderer);
 }
 
-void evolve(Automata* unit) 
+void evolve(Automata* unit)
 {
     sort(unit);
     Automata* p1, * p2;
-    for (int ct0 = FITTEST; ct0 < N; ct0++) 
+    for (int ct0 = FITTEST; ct0 < N; ct0++)
     {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];
 
-        for (int ct = 0; ct < unit->neuralNet.weight.size(); ct++) 
+        for (int ct = 0; ct < unit[ct0].neuralNet.weight.size(); ct++)
         {
-            for (int ct1 = 0; ct1 < unit->neuralNet.weight[ct].size(); ct1++)
+            for (int ct1 = 0; ct1 < unit[ct0].neuralNet.weight[ct].size(); ct1++)
             {
-                for (int ct2 = 0; ct2 < unit->neuralNet.weight[ct][ct1].size(); ct2++)
+                for (int ct2 = 0; ct2 < unit[ct0].neuralNet.weight[ct][ct1].size(); ct2++)
                 {
-                    if (rand() % 20) unit->neuralNet.weight[ct][ct1][ct2] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
-                    else if (rand() % 2) unit->neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
-                    else unit->neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                    if (rand() % 2) unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                    else unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                    if ((rand() % 20 == 0) && p1->neuralNet.fitness != 0 && p2->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
                 }
             }
         }

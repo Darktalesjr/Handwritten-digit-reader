@@ -82,12 +82,7 @@ int main(int argc, char* argv[])
             if (i) renderDrawNet(netRenderer, &unit[0]);
             SDL_RenderPresent(renderer);
         }
-        //for (int ct = 0; ct < N; ct++)
-        {
-            
-        }
-
-        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(GOAL[0] - unit[ct].player.x + 200 -unit[ct].player.j * 200);
+        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(GOAL[0] - unit[ct].player.x+ 200 - (unit[ct].player.y < L) * 200);
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         for (int ct = 0; ct < N; ct++)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;

@@ -5,7 +5,7 @@ const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
 const int N = 200, FITTEST = 9;
 const int EXT = 20;
-const int IEXT = 1, OEXT = 3;
+const int IEXT = 2, OEXT = 3;
 const int MUTRATE_NEW = 1, MUTRATE_RE = 1;
 const Uint8 FACTDIM = 2, FACTDEPTH = 1;
 const int GENTIMEMAX = 500;
@@ -103,9 +103,9 @@ struct Automata
 
     void think()
     {
-        //neuralNet.input[0] = player.x;
-        //neuralNet.input[2] = player.y;
         neuralNet.input[0] = GOAL[0] - player.x;
+        neuralNet.input[1] = (player.y < L) * 200;
+        
 
         float seed = 0;
 

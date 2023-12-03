@@ -7,19 +7,20 @@
 TTF_Font* font;
 const SDL_Color WHITE = { 255, 255, 255, 255 };
 
-float reLU(float x) { return(max(float(x / 10.0f), x)); }
-float sigmoid(float x) { return (1 / (1 + exp(-x))); }
+float inline reLU(float x) { return(max(float(x / 10.0f), x)); }
+float inline sigmoid(float x) { return (1 / (1 + exp(-x))); }
 
-float actF(float x) { return(reLU(x)); }
-float sactF(float x) { return(tanh(x)); }
+float inline actF(float x) { return(reLU(x)); }
+float inline sactF(float x) { return(tanh(x)); }
+float inline genWeight() { return ((((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018))) / 1018) / 2.5 - 1); }
 
-template<typename t> int max(vector<t> val) { //Returns the largest element of a vector
+template<typename t> int inline max(vector<t> val) { //Returns the largest element of a vector
     int m = 0;
     for (auto n : val) (n > m) ? m = n : m = m;
     return m;
 }
 
-void drawCircle(SDL_Renderer* renderer, int xc, int yc, int r)
+void inline drawCircle(SDL_Renderer* renderer, int xc, int yc, int r)
 {
     int x = 0, y = r;
     int d = 3 - 2 * r;
@@ -46,7 +47,7 @@ void drawCircle(SDL_Renderer* renderer, int xc, int yc, int r)
     }
 }
 
-void drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, int radius)
+void inline drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, int radius)
 {
     int r2 = radius * radius;
     int area = r2 << 2;
@@ -61,7 +62,7 @@ void drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, int radi
     }
 }
 
-void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
+void inline renderDrawNet(SDL_Renderer* renderer, Automata* unit)
 {
     int wDiff = WIDTH / (unit->neuralNet.actDim.size() + 3);
     int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim), int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
@@ -151,9 +152,9 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit)
     SDL_RenderPresent(renderer);
 }
 
-void evolve(Automata* unit)
+void inline evolve(Automata* unit)
 {
-    sort(unit);
+    sort(unit); 
     Automata* p1, * p2;
     for (int ct0 = FITTEST; ct0 < N; ct0++)
     {
@@ -166,9 +167,14 @@ void evolve(Automata* unit)
             {
                 for (int ct2 = 0; ct2 < unit[ct0].neuralNet.weight[ct][ct1].size(); ct2++)
                 {
-                    if (rand() % 2) unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
-                    else unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
-                    if ((rand() % 20 == 0) && p1->neuralNet.fitness != 0 && p2->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
+                    if (rand() % 2) {
+                        unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                        if ((rand() % 20 == 0) && p1->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
+                    }
+                    else {
+                        unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
+                        if ((rand() % 20 == 0) && p2->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
+                    }
                 }
             }
         }

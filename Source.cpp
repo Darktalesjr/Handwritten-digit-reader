@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
 
-    bool exit = true, w = false, a = false, s = false, d = false, i = false;
+    bool exit = true, i = false;
 
     while (exit) {
         for (int genTime = 0; genTime < GENTIMEMAX; genTime++)
@@ -54,7 +54,6 @@ int main(int argc, char* argv[])
                             SDL_DestroyRenderer(netRenderer);
                             SDL_DestroyWindow(netWindow);
                         }
-
                         break;
                     }
                 }
@@ -82,7 +81,7 @@ int main(int argc, char* argv[])
             if (i) renderDrawNet(netRenderer, &unit[0]);
             SDL_RenderPresent(renderer);
         }
-        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(GOAL[0] - unit[ct].player.x+ 200 - (unit[ct].player.y < L) * 200);
+        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(GOAL[0] - unit[ct].player.x) + abs(200 - (unit[ct].player.y < L) * 200);
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         for (int ct = 0; ct < N; ct++)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;

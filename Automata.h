@@ -5,28 +5,29 @@ const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
 const int N = 200, FITTEST = 9;
 const int EXT = 20;
-const int IEXT = 2, OEXT = 3;
-const int MUTRATE_NEW = 1, MUTRATE_RE = 1;
-const Uint8 FACTDIM = 2, FACTDEPTH = 1;
+const int IEXT = 1, OEXT = 3;
+const int MUTRATE_NEWT = 1, MUTRATE_RET = 1;
+const Uint8 FACTDIM = 1, FACTDEPTH = 1;
 const int GENTIMEMAX = 500;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
 const int TXE = EXT / 2;
 const int LIMIT = HEIGHT * 0.667;
 const int L = LIMIT - TXE;
+const int MUTRATE_NEW = 200 - MUTRATE_NEWT, MUTRATE_RE = 200 - MUTRATE_RET;
 
 const int GOAL[2]{ 200, 306 };
 
 float actF(float x);
 float sactF(float x);
+float genWeight();
 
 struct Player
 {
     float x, y;
     float ax, ay;
-    bool j;
 
-    void initPlayer() { x = 320, y = L, ax = 0, ay = 0; j = 0; }
+    void initPlayer() { x = 320, y = L, ax = 0, ay = 0;}
     Player() { initPlayer(); }
 };
 
@@ -40,7 +41,7 @@ struct NNet
     vector<Uint8> actDim;
     float fitness;
 
-    void initV()
+    void inline initV()
     {
         input.resize(IEXT);
         output.resize(OEXT);
@@ -62,12 +63,12 @@ struct NNet
         bias.back().resize(OEXT);
     }
 
-    void allocV()
+    void inline allocV()
     {
         int lgt = actDim.size();
         activation.resize(lgt);
-        bias.resize(lgt);
-        weight.resize(lgt);
+        bias.resize(lgt+1);
+        weight.resize(lgt+1);
         for (int ct = 0; ct < lgt; ct++)
         {
             activation[ct].resize(actDim[ct]);
@@ -78,12 +79,12 @@ struct NNet
         bias.back().resize(OEXT);
     }
 
-    void initNNet()
+    void inline initNNet()
     {
         for (int ct = 0; ct < activation.size(); ct++) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) activation[ct][ct1] = 0;
         for (int ct = 0; ct < bias.size(); ct++) for (int ct1 = 0; ct1 < bias[ct].size(); ct1++) bias[ct][ct1] = 0;
-        for (int ct = 0; ct < weight[0].size(); ct++) for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) weight[0][ct][ct1] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
-        for (int ct = 1; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 2036))) / 1018) - 2.5;
+        for (int ct = 0; ct < weight[0].size(); ct++) for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) weight[0][ct][ct1] = genWeight();
+        for (int ct = 1; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = genWeight();
     }
 
     void copyNet(NNet source)
@@ -101,11 +102,9 @@ struct Automata
     Player player;
     NNet neuralNet;
 
-    void think()
+    void inline think()
     {
         neuralNet.input[0] = GOAL[0] - player.x;
-        neuralNet.input[1] = (player.y < L) * 200;
-        
 
         float seed = 0;
 
@@ -134,14 +133,11 @@ struct Automata
     }
     void inline act()
     {
-        if (neuralNet.output[0] > ACTIVATION_THRESHOLD) {
-            if (player.y == L)player.ay = 11; player.j = 1;
-        }
+        if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
         if (neuralNet.output[1] > ACTIVATION_THRESHOLD) player.x -= 1;
         if (neuralNet.output[2] > ACTIVATION_THRESHOLD) player.x += 1;
     }
-
-    void mutate()
+    void inline mutate()
     {
         for (int ct = 0; ct < neuralNet.activation.size(); ct++)
         {

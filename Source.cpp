@@ -96,7 +96,6 @@ int main(int argc, char* argv[])
         if (i) renderDrawNet(netRenderer, &unit[0]);
         SDL_RenderPresent(renderer);
 
-        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(20 - (unit[ct].player.y < L) * 20);
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;

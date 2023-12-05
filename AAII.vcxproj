@@ -131,12 +131,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Automata.cpp" />
+    <ClCompile Include="NeuralNet.cpp" />
+    <ClCompile Include="NeuralNetFunctions.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Specie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Automata.h" />
     <ClInclude Include="Includes.h" />
+    <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="NeuralNetFunctions.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\SDL2.lib" />

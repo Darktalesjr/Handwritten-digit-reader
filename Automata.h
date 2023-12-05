@@ -3,7 +3,7 @@
 
 const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
-const int N = 200, FITTEST = 9;
+const int N = 2000, FITTEST = 9;
 const int EXT = 20;
 const int IEXT = 1, OEXT = 3;
 const int MUTRATE_NEWT = 1, MUTRATE_RET = 1;
@@ -16,7 +16,7 @@ const int LIMIT = HEIGHT * 0.667;
 const int L = LIMIT - TXE;
 const int MUTRATE_NEW = 200 - MUTRATE_NEWT, MUTRATE_RE = 200 - MUTRATE_RET;
 
-const int GOAL[2]{ 200, 306 };
+const int GOAL = 200;
 
 float actF(float x);
 float sactF(float x);
@@ -94,6 +94,12 @@ struct NNet
         bias = source.bias;
         actDim = source.actDim;
     }
+
+    NNet()
+    {
+        initV();
+        initNNet();
+    }
 };
 
 
@@ -104,7 +110,7 @@ struct Automata
 
     void inline think()
     {
-        neuralNet.input[0] = GOAL[0] - player.x;
+        neuralNet.input[0] = GOAL - player.x;
 
         float seed = 0;
 
@@ -131,7 +137,7 @@ struct Automata
         }
 
     }
-    void inline act()
+    void inline act()   
     {
         if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
         if (neuralNet.output[1] > ACTIVATION_THRESHOLD) player.x -= 1;
@@ -144,12 +150,6 @@ struct Automata
             if ((rand() % (1018 / MUTRATE_NEW)) == 0)neuralNet.actDim[ct]++;
             else if (((rand() % (10180 / MUTRATE_NEW)) == 0) && neuralNet.actDim[ct] > 3)neuralNet.actDim[ct]--;
         }
-    }
-
-    Automata()
-    {
-        neuralNet.initV();
-        neuralNet.initNNet();
     }
 };
 

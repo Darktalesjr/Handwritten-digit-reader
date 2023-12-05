@@ -160,7 +160,7 @@ void inline evolve(Automata* unit)
     {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];
-
+        
         for (int ct = 0; ct < unit[ct0].neuralNet.weight.size(); ct++)
         {
             for (int ct1 = 0; ct1 < unit[ct0].neuralNet.weight[ct].size(); ct1++)
@@ -168,12 +168,14 @@ void inline evolve(Automata* unit)
                 for (int ct2 = 0; ct2 < unit[ct0].neuralNet.weight[ct][ct1].size(); ct2++)
                 {
                     if (rand() % 2) {
+                        //if(ct0 == N - 1)cout << unit[ct0].neuralNet.weight[ct][ct1][ct2] << " " << p1->neuralNet.weight[ct][ct1][ct2] << endl;
                         unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
-                        if ((rand() % 20 == 0) && p1->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
+                        if ((rand() % 2 == 0) && p1->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
                     }
                     else {
-                        unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
-                        if ((rand() % 20 == 0) && p2->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
+                        //if (ct0 == N - 1) cout << unit[ct0].neuralNet.weight[ct][ct1][ct2] << " " << p2->neuralNet.weight[ct][ct1][ct2] << endl;
+                        unit[ct0].neuralNet.weight[ct][ct1][ct2] = p2->neuralNet.weight[ct][ct1][ct2];
+                        if ((rand() % 2 == 0) && p2->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
                     }
                 }
             }

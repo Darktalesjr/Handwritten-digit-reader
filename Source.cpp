@@ -24,45 +24,40 @@ int main(int argc, char* argv[])
     bool exit = true, i = false;
 
     while (exit) {
-        for (int genTime = 0; genTime < GENTIMEMAX; genTime++)
+        while (SDL_PollEvent(&event))
         {
-            while (SDL_PollEvent(&event))
+            switch (event.type)
             {
-                switch (event.type)
+            case SDL_QUIT:
+                exit = false;
+            case SDL_WINDOWEVENT:
+                switch (event.window.event) {
+                case SDL_WINDOWEVENT_RESIZED:
+                    break;
+                case SDL_WINDOWEVENT_CLOSE:
+                    if (SDL_GetWindowFromID(event.window.windowID) == window) exit = false; 
+                    else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
+                    break;
+                }
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.scancode)
                 {
-                case SDL_QUIT:
-                    exit = false;
-                case SDL_WINDOWEVENT:
-                    switch (event.window.event) {
-                    case SDL_WINDOWEVENT_RESIZED:
-                        break;
-                    case SDL_WINDOWEVENT_CLOSE:
-                        if (SDL_GetWindowFromID(event.window.windowID) == window) { exit = false; genTime = GENTIMEMAX; }
-                        else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
-                        break;
+                case SDL_SCANCODE_I:
+                    i = !i;
+                    if (i) {
+                        netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+                        netRenderer = SDL_CreateRenderer(netWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
                     }
-                case SDL_KEYDOWN:
-                    switch (event.key.keysym.scancode)
-                    {
-                    case SDL_SCANCODE_I:
-                        i = !i;
-                        if (i) {
-                            netWindow = SDL_CreateWindow("Net renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
-                            netRenderer = SDL_CreateRenderer(netWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-                        }
-                        else {
-                            SDL_DestroyRenderer(netRenderer);
-                            SDL_DestroyWindow(netWindow);
-                        }
-                        break;
+                    else {
+                        SDL_DestroyRenderer(netRenderer);
+                        SDL_DestroyWindow(netWindow);
                     }
+                    break;
                 }
             }
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-            SDL_RenderDrawLine(renderer, 0, LIMIT, WIDTH, LIMIT);
+        }
+        for (int genTime = 0; genTime < GENTIMEMAX; genTime++)
+        {
 
             for (int ct = 0; ct < N; ct++)
             {
@@ -76,15 +71,35 @@ int main(int argc, char* argv[])
                 if (unit[ct].player.x < TXE)unit[ct].player.x = TXE;
                 if (unit[ct].player.x > WIDTH - TXE)unit[ct].player.x = WIDTH - TXE;
                 objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
-                SDL_RenderDrawRect(renderer, &objRect);
             }
-            if (i) renderDrawNet(netRenderer, &unit[0]);
-            SDL_RenderPresent(renderer);
         }
-        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(GOAL[0] - unit[ct].player.x) + abs(200 - (unit[ct].player.y < L) * 200);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+        SDL_RenderDrawLine(renderer, 0, LIMIT, WIDTH, LIMIT);
+
+        for (int ct = 0; ct < N; ct++)
+        {
+            unit[ct].player.y -= unit[ct].player.ay;
+            if (unit[ct].player.y <= L) unit[ct].player.ay -= 0.5;
+            else unit[ct].player.y = L;
+
+            unit[ct].think();
+            unit[ct].act();
+
+            if (unit[ct].player.x < TXE)unit[ct].player.x = TXE;
+            if (unit[ct].player.x > WIDTH - TXE)unit[ct].player.x = WIDTH - TXE;
+            objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
+            SDL_RenderDrawRect(renderer, &objRect);
+        }
+        if (i) renderDrawNet(netRenderer, &unit[0]);
+        SDL_RenderPresent(renderer);
+
+        for (int ct = 0; ct < N; ct++)unit[ct].neuralNet.fitness = abs(20 - (unit[ct].player.y < L) * 20);
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
-        for (int ct = 0; ct < N; ct++)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
+        for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
     }
 
     SDL_DestroyRenderer(renderer);

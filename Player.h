@@ -1,4 +1,6 @@
 #pragma once
+#include "includes.h"
+
 struct Player
 {
     float x, y;

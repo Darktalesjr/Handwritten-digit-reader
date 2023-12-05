@@ -1,4 +1,5 @@
 #include "Automata.h"
+#include "includes.h"
 
 inline void Automata::think()
 {
@@ -50,4 +51,16 @@ inline void Automata::swap(Automata* source)
     neuralNet.weight.swap(source->neuralNet.weight);
     neuralNet.bias.swap(source->neuralNet.bias);
     std::swap(neuralNet.fitness, source->neuralNet.fitness);
+}
+
+inline void sort(Automata* source) {
+    for (int ct = 0; ct < N; ct++)source[ct].neuralNet.fitness = abs(20 - (source[ct].player.y < L) * 20);
+    for (int ct = 1; ct < N;)
+    {
+        if (source[ct].neuralNet.fitness < source[ct - 1].neuralNet.fitness) {
+            source[ct].swap(&source[ct - 1]);
+            if (ct > 1) ct--;
+        }
+        else ct++;
+    }
 }

@@ -1,7 +1,4 @@
 #include "includes.h"
-#include "SDL.h"
-#include "Automata.h"
-#include "NeuralNetFunctions.h"
 
 int main(int argc, char* argv[])
 {
@@ -96,7 +93,7 @@ int main(int argc, char* argv[])
         if (i) renderDrawNet(netRenderer, &unit[0]);
         SDL_RenderPresent(renderer);
 
-        evolve(unit);
+        //evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
     }

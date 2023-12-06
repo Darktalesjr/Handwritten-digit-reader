@@ -1,5 +1,6 @@
 #pragma once
-#include "Includes.h"
+#include "includes.h"
+
 struct NeuralNet
 {
     vector<float> input;
@@ -7,7 +8,7 @@ struct NeuralNet
     vector<vector<float>> activation;
     vector<vector<float>> bias;
     vector<vector<vector<float>>> weight;
-    vector<Uint8> actDim;
+    vector<int> actDim;
     float fitness;
 
     void inline initV();

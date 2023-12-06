@@ -1,5 +1,4 @@
 #include "NeuralNetFunctions.h"
-#include "includes.h"
 
 template<typename t> int inline max(vector<t> val) {
     int m = 0;

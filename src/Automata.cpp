@@ -1,5 +1,4 @@
 #include "Automata.h"
-#include "includes.h"
 
 inline void Automata::think()
 {

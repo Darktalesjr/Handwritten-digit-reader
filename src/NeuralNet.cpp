@@ -1,5 +1,4 @@
 #include "NeuralNet.h"
-#include "includes.h"
 
 void inline NeuralNet::initV()
 {

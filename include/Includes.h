@@ -28,11 +28,14 @@ const int MUTRATE_NEW = 200 - MUTRATE_NEWT, MUTRATE_RE = 200 - MUTRATE_RET;
 
 const int GOAL = 200;
 
-TTF_Font* font;
+
 const SDL_Color WHITE = { 255, 255, 255, 255 };
 
-#include "Player.h"
-#include "NeuralNet.h"
-#include "Automata.h"
-#include "NeuralNetFunctions.h"
+float inline lreLU(float x) { return(max(float(x / 10.0f), x)); }
+float inline reLU(float x) { return(max(0.0f, x)); }
+float inline sigmoid(float x) { return (1 / (1 + exp(-x))); }
 
+float inline actF(float x) { return(reLU(x)); }
+float inline sactF(float x) { return(tanh(x)); }
+
+float inline genWeight() { return ((((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018))) / 1018) / 2.5 - 1); }

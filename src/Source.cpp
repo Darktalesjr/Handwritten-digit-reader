@@ -1,4 +1,5 @@
 #include "includes.h"
+#include "NeuralNetFunctions.h"
 
 int main(int argc, char* argv[])
 {
@@ -7,6 +8,7 @@ int main(int argc, char* argv[])
     SDL_Renderer* renderer = NULL;
     SDL_Window* netWindow = NULL;
     SDL_Renderer* netRenderer = NULL;
+    TTF_Font* font;
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
     window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
@@ -90,10 +92,10 @@ int main(int argc, char* argv[])
             objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
             SDL_RenderDrawRect(renderer, &objRect);
         }
-        if (i) renderDrawNet(netRenderer, &unit[0]);
+        if (i) renderDrawNet(netRenderer, &unit[0],font);
         SDL_RenderPresent(renderer);
 
-        //evolve(unit);
+        evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
     }

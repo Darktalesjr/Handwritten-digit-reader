@@ -48,7 +48,7 @@ void inline drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, i
     }
 }
 
-void inline renderDrawNet(SDL_Renderer* renderer, Automata* unit)
+void inline renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font)
 {
     int wDiff = WIDTH / (unit->neuralNet.actDim.size() + 3);
     int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim), int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));

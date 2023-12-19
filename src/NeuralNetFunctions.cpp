@@ -1,3 +1,4 @@
+#pragma once
 #include "NeuralNetFunctions.h"
 
 template<typename t> int inline max(vector<t> val) {
@@ -154,12 +155,10 @@ void inline evolve(Automata* unit)
                 for (int ct2 = 0; ct2 < unit[ct0].neuralNet.weight[ct][ct1].size(); ct2++)
                 {
                     if (rand() % 2) {
-                        //if(ct0 == N - 1)cout << unit[ct0].neuralNet.weight[ct][ct1][ct2] << " " << p1->neuralNet.weight[ct][ct1][ct2] << endl;
                         unit[ct0].neuralNet.weight[ct][ct1][ct2] = p1->neuralNet.weight[ct][ct1][ct2];
                         if ((rand() % 2 == 0) && p1->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
                     }
                     else {
-                        //if (ct0 == N - 1) cout << unit[ct0].neuralNet.weight[ct][ct1][ct2] << " " << p2->neuralNet.weight[ct][ct1][ct2] << endl;
                         unit[ct0].neuralNet.weight[ct][ct1][ct2] = p2->neuralNet.weight[ct][ct1][ct2];
                         if ((rand() % 2 == 0) && p2->neuralNet.fitness != 0) unit[ct0].neuralNet.weight[ct][ct1][ct2] = genWeight();
                     }

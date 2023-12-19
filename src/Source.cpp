@@ -1,5 +1,5 @@
 #include "includes.h"
-#include "NeuralNetFunctions.h"
+#include "NeuralNetFunctions.cpp"
 
 int main(int argc, char* argv[])
 {
@@ -21,7 +21,6 @@ int main(int argc, char* argv[])
     SDL_Event event;
 
     bool exit = true, i = false;
-
     while (exit) {
         while (SDL_PollEvent(&event))
         {
@@ -94,7 +93,6 @@ int main(int argc, char* argv[])
         }
         if (i) renderDrawNet(netRenderer, &unit[0],font);
         SDL_RenderPresent(renderer);
-
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;

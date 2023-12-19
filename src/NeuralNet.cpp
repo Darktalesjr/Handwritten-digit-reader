@@ -1,3 +1,4 @@
+#pragma once
 #include "NeuralNet.h"
 
 void inline NeuralNet::initV()

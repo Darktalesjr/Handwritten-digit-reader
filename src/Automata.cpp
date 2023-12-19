@@ -3,6 +3,7 @@
 inline void Automata::think()
 {
     neuralNet.input[0] = GOAL - player.x;
+    neuralNet.input[1] = (player.y == L);
 
     float seed = 0;
 
@@ -53,7 +54,7 @@ inline void Automata::swap(Automata* source)
 }
 
 inline void sort(Automata* source) {
-    for (int ct = 0; ct < N; ct++)source[ct].neuralNet.fitness = abs(20 - (source[ct].player.y < L) * 20);
+    for (int ct = 0; ct < N; ct++) source[ct].neuralNet.fitness = abs((source[ct].player.y < L) * 20) + abs(GOAL - source[ct].player.x);
     for (int ct = 1; ct < N;)
     {
         if (source[ct].neuralNet.fitness < source[ct - 1].neuralNet.fitness) {

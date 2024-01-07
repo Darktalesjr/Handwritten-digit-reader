@@ -1,11 +1,4 @@
-#pragma once
 #include "NeuralNetFunctions.h"
-
-template<typename t> int inline max(vector<t> val) {
-    int m = 0;
-    for (auto n : val) (n > m) ? m = n : m = m;
-    return m;
-}
 
 void inline drawCircle(SDL_Renderer* renderer, int xc, int yc, int r)
 {
@@ -49,7 +42,7 @@ void inline drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, i
     }
 }
 
-void inline renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font)
+void renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font)
 {
     int wDiff = WIDTH / (unit->neuralNet.actDim.size() + 3);
     int hDiff = HEIGHT / (max(max(max(unit->neuralNet.actDim), int(unit->neuralNet.input.size())), int(unit->neuralNet.output.size())));
@@ -139,11 +132,11 @@ void inline renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font
     SDL_RenderPresent(renderer);
 }
 
-void inline evolve(Automata* unit)
+void evolve(Automata* unit) 
 {
     sort(unit);
     Automata* p1, * p2;
-    for (int ct0 = FITTEST; ct0 < N; ct0++)
+    for (int ct0 = FITTEST; ct0 < N; ct0++)if (unit[ct0].neuralNet.fitness !=0)
     {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];

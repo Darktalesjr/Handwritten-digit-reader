@@ -1,5 +1,5 @@
 #include "includes.h"
-#include "NeuralNetFunctions.cpp"
+#include "NeuralNetFunctions.h"
 
 int main(int argc, char* argv[])
 {
@@ -9,14 +9,61 @@ int main(int argc, char* argv[])
     SDL_Window* netWindow = NULL;
     SDL_Renderer* netRenderer = NULL;
     TTF_Font* font;
+
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
+
     window = SDL_CreateWindow("Global enviroment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 17);
 
+
+
+    fstream file;
+    file.open("C:/Users/nicol/source/repos/AAIIbv2/Resources/source.bin", ios::in | ios::out | ios::app | ios::binary);
+
+    float num = 2.6;
+    char e = (char)(num);
+    cout << num << endl;
+    cout << (float)e << endl;
+    file << e;
+    file.write((const char*)&num, sizeof(char));
+    num++;
+    file.write((const char*)&num, sizeof(char));
+
+    file.close();
+    
+    
+
+
+    
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Automata* unit = new Automata[N]();
+
     SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
 
@@ -50,6 +97,9 @@ int main(int argc, char* argv[])
                         SDL_DestroyRenderer(netRenderer);
                         SDL_DestroyWindow(netWindow);
                     }
+                    break;
+                case SDL_SCANCODE_E:
+
                     break;
                 }
             }
@@ -95,7 +145,7 @@ int main(int argc, char* argv[])
         SDL_RenderPresent(renderer);
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
-        for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
+        //for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
     }
 
     SDL_DestroyRenderer(renderer);

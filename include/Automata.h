@@ -8,10 +8,10 @@ struct Automata
     Player player;
     NeuralNet neuralNet;
 
-    inline void think();
-    inline void act();
+    void think();
+    void act();
     inline void mutate();
     inline void swap(Automata* source);
 };
 
-inline void sort(Automata* source);
+void sort(Automata* source);

@@ -1,6 +1,6 @@
 #include "Automata.h"
 
-inline void Automata::think()
+void Automata::think()
 {
     neuralNet.input[0] = GOAL - player.x;
     neuralNet.input[1] = (player.y == L);
@@ -30,7 +30,7 @@ inline void Automata::think()
     }
 
 }
-inline void Automata::act()
+void Automata::act()
 {
     if (neuralNet.output[0] > ACTIVATION_THRESHOLD) if (player.y == L)player.ay = 11;
     if (neuralNet.output[1] > ACTIVATION_THRESHOLD) player.x -= 1;
@@ -53,7 +53,7 @@ inline void Automata::swap(Automata* source)
     std::swap(neuralNet.fitness, source->neuralNet.fitness);
 }
 
-inline void sort(Automata* source) {
+void sort(Automata* source) {
     for (int ct = 0; ct < N; ct++) source[ct].neuralNet.fitness = abs((source[ct].player.y < L) * 20) + abs(GOAL - source[ct].player.x);
     for (int ct = 1; ct < N;)
     {

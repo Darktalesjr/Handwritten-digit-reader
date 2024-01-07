@@ -13,11 +13,11 @@ using namespace std;
 
 const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
-const int N = 2000, FITTEST = 9;
+const int N = 2000, FITTEST = 2;
 const int EXT = 20;
-const int IEXT = 1, OEXT = 3;
+const int IEXT = 2, OEXT = 3;
 const int MUTRATE_NEWT = 1, MUTRATE_RET = 1;
-const int FACTDIM = 1, FACTDEPTH = 1;
+const int FACTDIM = 2, FACTDEPTH = 1;
 const int GENTIMEMAX = 500;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
@@ -39,3 +39,9 @@ float inline actF(float x) { return(reLU(x)); }
 float inline sactF(float x) { return(tanh(x)); }
 
 float inline genWeight() { return ((((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018))) / 1018) / 2.5 - 1); }
+
+template<typename t> int inline max(vector<t> val) {
+    int m = 0;
+    for (auto n : val) (n > m) ? m = n : m = m;
+    return m;
+}

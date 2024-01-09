@@ -13,7 +13,7 @@ using namespace std;
 
 const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
-const int N = 2000, FITTEST = 2;
+const int N = 200, FITTEST = 9;
 const int EXT = 20;
 const int IEXT = 2, OEXT = 3;
 const int MUTRATE_NEWT = 1, MUTRATE_RET = 1;

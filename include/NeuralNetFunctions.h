@@ -12,4 +12,4 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font);
 
 void evolve(Automata* unit);
 
-void saveData(Automata* source, fstream* file);
+void saveFile(Automata* source, fstream* file);

@@ -136,7 +136,7 @@ void evolve(Automata* unit)
 {
     sort(unit);
     Automata* p1, * p2;
-    for (int ct0 = FITTEST; ct0 < N; ct0++)if (unit[ct0].neuralNet.fitness !=0)
+    for (int ct0 = FITTEST; ct0 < N; ct0++) if (unit[ct0].neuralNet.fitness !=0)
     {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];
@@ -161,22 +161,9 @@ void evolve(Automata* unit)
     }
 }
 
-void saveData(Automata* source, fstream* file)
+void saveFile(Automata* source, fstream* file)
 {
-    for (int ct0 = 0; ct0 < N; ct0++)
-    {
-        for (int ct = 0; ct < source[ct0].neuralNet.weight.size(); ct++)
-        {
-            for (int ct1 = 0; ct1 < source[ct0].neuralNet.weight[ct].size(); ct1++)
-            {
-                for (int ct2 = 0; ct2 < source[ct0].neuralNet.weight[ct][ct1].size(); ct2++)
-                {
 
-                }
-            }
-        }
-    }
-    file->write((const char*)source, sizeof(float));
 }
 
 /*

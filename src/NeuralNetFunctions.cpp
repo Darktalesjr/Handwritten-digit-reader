@@ -161,6 +161,24 @@ void evolve(Automata* unit)
     }
 }
 
+void saveData(Automata* source, fstream* file)
+{
+    for (int ct0 = 0; ct0 < N; ct0++)
+    {
+        for (int ct = 0; ct < source[ct0].neuralNet.weight.size(); ct++)
+        {
+            for (int ct1 = 0; ct1 < source[ct0].neuralNet.weight[ct].size(); ct1++)
+            {
+                for (int ct2 = 0; ct2 < source[ct0].neuralNet.weight[ct][ct1].size(); ct2++)
+                {
+
+                }
+            }
+        }
+    }
+    file->write((const char*)source, sizeof(float));
+}
+
 /*
 if (bool(rand() % 2))
         {

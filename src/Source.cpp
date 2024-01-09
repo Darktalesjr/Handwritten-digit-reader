@@ -18,52 +18,10 @@ int main(int argc, char* argv[])
 
     font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 17);
 
-
-
     fstream file;
-    file.open("C:/Users/nicol/source/repos/AAIIbv2/Resources/source.bin", ios::in | ios::out | ios::app | ios::binary);
-
-    float num = 2.6;
-    char e = (char)(num);
-    cout << num << endl;
-    cout << (float)e << endl;
-    file << e;
-    file.write((const char*)&num, sizeof(char));
-    num++;
-    file.write((const char*)&num, sizeof(char));
-
-    file.close();
-    
-    
-
-
-    
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    file.open("Resources/source.bin", ios::in | ios::out | ios::binary);
     Automata* unit = new Automata[N]();
-
+    saveData(unit, &file);
     SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
 
@@ -147,7 +105,7 @@ int main(int argc, char* argv[])
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
         //for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
     }
-
+    file.close();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

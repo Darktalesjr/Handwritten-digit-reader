@@ -11,3 +11,5 @@ void inline drawFilledCircle(SDL_Renderer* renderer, int centreX, int centreY, i
 void renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font);
 
 void evolve(Automata* unit);
+
+void saveFile(Automata* source, fstream* file);

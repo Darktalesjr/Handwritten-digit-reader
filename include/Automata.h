@@ -10,6 +10,8 @@ struct Automata
 
     void think();
     void act();
+    void train();
+    void evaluate();
     inline void mutate();
     inline void swap(Automata* source);
 };

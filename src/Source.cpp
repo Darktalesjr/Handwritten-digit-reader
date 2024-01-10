@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
                 case SDL_WINDOWEVENT_RESIZED:
                     break;
                 case SDL_WINDOWEVENT_CLOSE:
-                    if (SDL_GetWindowFromID(event.window.windowID) == window) exit = false; 
+                    if (SDL_GetWindowFromID(event.window.windowID) == window) exit = false;
                     else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
                     break;
                 }
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
                 unit[ct].player.y -= unit[ct].player.ay;
                 if (unit[ct].player.y <= L) unit[ct].player.ay -= 0.5;
                 else unit[ct].player.y = L;
-
+                cout << "e" << endl;
                 unit[ct].think();
                 unit[ct].act();
 
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
             objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
             SDL_RenderDrawRect(renderer, &objRect);
         }
-        if (i) renderDrawNet(netRenderer, &unit[0],font);
+        if (i) renderDrawNet(netRenderer, &unit[0], font);
         SDL_RenderPresent(renderer);
         evolve(unit);
         for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();

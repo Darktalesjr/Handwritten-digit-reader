@@ -15,9 +15,9 @@ const float ACTIVATION_THRESHOLD = 0.5;
 const int WIDTH = 640, HEIGHT = 480;
 const int N = 2000, FITTEST = 9;
 const int EXT = 20;
-const int IEXT = 2, OEXT = 3;
+const int IEXT = 28 * 28, OEXT = 10;
 const int MUTRATE_NEWT = 1, MUTRATE_RET = 1;
-const int FACTDIM = 2, FACTDEPTH = 1;
+const int FACTDIM = 16, FACTDEPTH = 2;
 const int GENTIMEMAX = 500;
 
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
@@ -27,6 +27,9 @@ const int L = LIMIT - TXE;
 const int MUTRATE_NEW = 200 - MUTRATE_NEWT, MUTRATE_RE = 200 - MUTRATE_RET;
 
 const int GOAL = 200;
+
+const uint32_t rows = 28;
+const uint32_t cols = 28;
 
 
 const SDL_Color WHITE = { 255, 255, 255, 255 };

@@ -132,11 +132,11 @@ void renderDrawNet(SDL_Renderer* renderer, Automata* unit, TTF_Font* font)
     SDL_RenderPresent(renderer);
 }
 
-void evolve(Automata* unit) 
+void evolve(Automata* unit)
 {
     sort(unit);
     Automata* p1, * p2;
-    for (int ct0 = FITTEST; ct0 < N; ct0++) if (unit[ct0].neuralNet.fitness !=0)
+    for (int ct0 = FITTEST; ct0 < N; ct0++) if (unit[ct0].neuralNet.fitness != 0)
     {
         p1 = &unit[rand() % FITTEST];
         p2 = &unit[rand() % FITTEST];

@@ -14,6 +14,9 @@ struct NeuralNet
     void inline initV();
     void inline allocV();
     void inline initNNet();
+    void think();
+    void train();
+    void evaluate();
     void copyNet(NeuralNet source);
     NeuralNet();
 };

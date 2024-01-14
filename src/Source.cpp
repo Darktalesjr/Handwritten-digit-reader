@@ -1,4 +1,3 @@
-#include "includes.h"
 #include "NeuralNetFunctions.h"
 
 int main(int argc, char* argv[])
@@ -17,70 +16,31 @@ int main(int argc, char* argv[])
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     font = TTF_OpenFont("Resources/Fonts/Inconsolata_Condensed-SemiBold.ttf", 17);
-
-
-
-    fstream file;
-    file.open("C:/Users/nicol/source/repos/AAIIbv2/Resources/source.bin", ios::in | ios::out | ios::app | ios::binary);
-
-    float num = 2.6;
-    char e = (char)(num);
-    cout << num << endl;
-    cout << (float)e << endl;
-    file << e;
-    file.write((const char*)&num, sizeof(char));
-    num++;
-    file.write((const char*)&num, sizeof(char));
-
-    file.close();
     
-    
+    NeuralNet* net = new NeuralNet();
+    //Automata* unit = new Automata[N]();
+    //fstream file;
+    //file.open("C:/Users/nicol/source/repos/AAIIbv2/Resources/source.bin", ios::in | ios::out | ios::app | ios::binary);
+    //saveFile(net, &file);
 
-
-    
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Automata* unit = new Automata[N]();
-
-    SDL_Rect objRect{ 0,0,EXT,EXT };
     SDL_Event event;
-
-    bool exit = true, i = false;
-    while (exit) {
+    bool running = true, i = false;
+    thread* trainThread = new thread[12];
+    //trainThread[0](&NeuralNet::train, net);
+    while (running) {
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
             {
             case SDL_QUIT:
-                exit = false;
+                running = false;
+                break;
             case SDL_WINDOWEVENT:
                 switch (event.window.event) {
                 case SDL_WINDOWEVENT_RESIZED:
                     break;
                 case SDL_WINDOWEVENT_CLOSE:
-                    if (SDL_GetWindowFromID(event.window.windowID) == window) exit = false; 
+                    if (SDL_GetWindowFromID(event.window.windowID) == window) running = false;
                     else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
                     break;
                 }
@@ -98,56 +58,22 @@ int main(int argc, char* argv[])
                         SDL_DestroyWindow(netWindow);
                     }
                     break;
-                case SDL_SCANCODE_E:
-
-                    break;
                 }
-            }
-        }
-        for (int genTime = 0; genTime < GENTIMEMAX; genTime++)
-        {
-
-            for (int ct = 0; ct < N; ct++)
-            {
-                unit[ct].player.y -= unit[ct].player.ay;
-                if (unit[ct].player.y <= L) unit[ct].player.ay -= 0.5;
-                else unit[ct].player.y = L;
-
-                unit[ct].think();
-                unit[ct].act();
-
-                if (unit[ct].player.x < TXE)unit[ct].player.x = TXE;
-                if (unit[ct].player.x > WIDTH - TXE)unit[ct].player.x = WIDTH - TXE;
-                objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
             }
         }
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-        SDL_RenderDrawLine(renderer, 0, LIMIT, WIDTH, LIMIT);
+        
 
-        for (int ct = 0; ct < N; ct++)
-        {
-            unit[ct].player.y -= unit[ct].player.ay;
-            if (unit[ct].player.y <= L) unit[ct].player.ay -= 0.5;
-            else unit[ct].player.y = L;
-
-            unit[ct].think();
-            unit[ct].act();
-
-            if (unit[ct].player.x < TXE)unit[ct].player.x = TXE;
-            if (unit[ct].player.x > WIDTH - TXE)unit[ct].player.x = WIDTH - TXE;
-            objRect.x = unit[ct].player.x - TXE, objRect.y = unit[ct].player.y - TXE;
-            SDL_RenderDrawRect(renderer, &objRect);
-        }
-        if (i) renderDrawNet(netRenderer, &unit[0],font);
         SDL_RenderPresent(renderer);
-        evolve(unit);
-        for (int ct = 0; ct < N; ct++)unit[ct].player.initPlayer();
-        //for (int ct = 0; ct < N; ct+=10)cout << unit[ct].neuralNet.fitness << " - "; cout << endl;
+        if (i) renderDrawNet(netRenderer, net, font);
     }
-
+    trainThread.join();
+    //file.close();         
+    SDL_DestroyRenderer(netRenderer);
+    SDL_DestroyWindow(netWindow);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

@@ -1,5 +1,2 @@
-﻿  Source.cpp
-C:\Users\nicol\source\repos\handwritten_digit_reader\src\Source.cpp(29,20): error C2039: 't': is not a member of 'std::thread'
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\thread(37,19): message : see declaration of 'std::thread'
-C:\Users\nicol\source\repos\handwritten_digit_reader\src\Source.cpp(29,25): error C2146: syntax error: missing ';' before identifier 'hread'
-C:\Users\nicol\source\repos\handwritten_digit_reader\src\Source.cpp(29,25): error C3861: 'hread': identifier not found
+﻿  NeuralNet.cpp
+  handwritten_digit_reader.vcxproj -> C:\Users\nicol\source\repos\handwritten_digit_reader\x64\Debug\handwritten_digit_reader.exe

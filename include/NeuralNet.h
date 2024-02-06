@@ -3,16 +3,17 @@
 
 struct NeuralNet
 {
-    vector<float> input;
-    vector<float> output;
+    float input[IEXT];
+    float output[OEXT];
+    float goal[OEXT];
+
     vector<vector<float>> activation;
+    vector<vector<float>> zValue;
+    vector<vector<float>> error;
     vector<vector<float>> bias;
     vector<vector<vector<float>>> weight;
-    vector<int> actDim;
-    float fitness;
 
     void inline initV();
-    void inline allocV();
     void inline initNNet();
     void think();
     void train();

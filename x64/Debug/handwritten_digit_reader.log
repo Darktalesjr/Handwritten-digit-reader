@@ -1,2 +1,26 @@
 ﻿  NeuralNet.cpp
-  handwritten_digit_reader.vcxproj -> C:\Users\nicol\source\repos\handwritten_digit_reader\x64\Debug\handwritten_digit_reader.exe
+C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNet.cpp(120,50): error C2065: 'output': undeclared identifier
+  NeuralNetFunctions.cpp
+C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNetFunctions.cpp(70,47): error C2039: 'input': is not a member of 'NeuralNet'
+  C:\Users\nicol\source\repos\handwritten_digit_reader\include\NeuralNet.h(4,8):
+  see declaration of 'NeuralNet'
+  
+C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNetFunctions.cpp(70,78): error C2039: 'input': is not a member of 'NeuralNet'
+  C:\Users\nicol\source\repos\handwritten_digit_reader\include\NeuralNet.h(4,8):
+  see declaration of 'NeuralNet'
+  
+C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNetFunctions.cpp(70,113): error C2039: 'input': is not a member of 'NeuralNet'
+  C:\Users\nicol\source\repos\handwritten_digit_reader\include\NeuralNet.h(4,8):
+  see declaration of 'NeuralNet'
+  
+C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNetFunctions.cpp(70,9): error C2660: 'SDL_SetRenderDrawColor': function does not take 2 arguments
+  C:\Users\nicol\source\repos\handwritten_digit_reader\libs\SDL2\SDL_render.h(1079,29):
+  see declaration of 'SDL_SetRenderDrawColor'
+  C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNetFunctions.cpp(70,9):
+  while trying to match the argument list '(SDL_Renderer *, int)'
+  
+C:\Users\nicol\source\repos\handwritten_digit_reader\src\NeuralNetFunctions.cpp(106,39): error C2039: 'output': is not a member of 'NeuralNet'
+  C:\Users\nicol\source\repos\handwritten_digit_reader\include\NeuralNet.h(4,8):
+  see declaration of 'NeuralNet'
+  
+  Generating Code...

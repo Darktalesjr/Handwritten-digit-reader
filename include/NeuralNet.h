@@ -3,8 +3,6 @@
 
 struct NeuralNet
 {
-    float input[IEXT];
-    float output[OEXT];
     float goal[OEXT];
 
     vector<vector<float>> activation;

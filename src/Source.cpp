@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        renderDrawNet(renderer, net, font); 
+        //renderDrawNet(renderer, net, font); 
     }
     trainThread.join();
     SDL_DestroyRenderer(renderer);

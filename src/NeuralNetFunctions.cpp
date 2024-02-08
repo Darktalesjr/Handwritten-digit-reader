@@ -67,7 +67,7 @@ void renderDrawNet(SDL_Renderer* renderer, NeuralNet* net, TTF_Font* font)
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
     for (int ct = 0; ct < ROWS; ct++) for (int ct1 = 0; ct1 < COLS; ct1++) {
-        SDL_SetRenderDrawColor(renderer, net->input[ct*ROWS+ct1] * 255, net->input[ct * ROWS + ct1] * 255, net->input[ct * ROWS + ct1] * 255, 255);
+        SDL_SetRenderDrawColor(renderer, net->activation[0][ct*ROWS+ct1] * 255, net->activation[0][ct * ROWS + ct1] * 255, net->activation[0][ct * ROWS + ct1] * 255, 255);
         for (int ct2 = 0; ct2 < ZOOM_ICON; ct2++)for (int ct3 = 0; ct3 < ZOOM_ICON; ct3++) SDL_RenderDrawPoint(renderer, ct1 * ZOOM_ICON + ct2 + (wDiff*2 - ZOOM_ICON * ROWS) / 2, ct * ZOOM_ICON + ct3 + HEI - ZOOM_ICON * ROWS / 2);
     }
 
@@ -103,7 +103,7 @@ void renderDrawNet(SDL_Renderer* renderer, NeuralNet* net, TTF_Font* font)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         drawCircle(renderer, WIDTH - wDiff, ((ct - (OEXT / 2.0f)) * hDiff) + HEI + (hDiff / 2), 20);
 
-        source = to_string(float(net->output[ct])).substr(0, 4);
+        source = to_string(float(net->activation.back()[ct])).substr(0, 4);
         TTF_SizeText(font, sourcePtr, &w, &h);
         surfaceMessage = TTF_RenderText_Solid(font, sourcePtr, WHITE);
         text = SDL_CreateTextureFromSurface(renderer, surfaceMessage);

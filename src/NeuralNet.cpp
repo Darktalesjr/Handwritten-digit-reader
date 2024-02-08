@@ -2,13 +2,14 @@
 
 void inline NeuralNet::initV()
 {
-    error.resize(FACTDEPTH + 1);
     activation.resize(FACTDEPTH + 2);
+    error.resize(FACTDEPTH + 1);
     zValue.resize(FACTDEPTH + 1);
     bias.resize(FACTDEPTH + 1);
     weight.resize(FACTDEPTH + 1);
-    for (int ct = 0; ct < FACTDEPTH + 1; ct++) {
-        activation[ct].resize(FACTDIM);
+    activation[0].resize(IEXT);
+    for (int ct = 0; ct < FACTDEPTH; ct++) {
+        activation[ct + 1].resize(FACTDIM);
         error[ct].resize(FACTDIM);
         zValue[ct].resize(FACTDIM);
         bias[ct].resize(FACTDIM);
@@ -16,9 +17,12 @@ void inline NeuralNet::initV()
         if (ct == 0) for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[0][ct1].resize(IEXT);
         else for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[ct][ct1].resize(FACTDIM);
     }
+    activation.back().resize(OEXT);
+    bias.back().resize(OEXT);
+    zValue.back().resize(OEXT);
+    error.back().resize(OEXT);
     weight.back().resize(OEXT);
     for (int ct1 = 0; ct1 < OEXT; ct1++) weight.back()[ct1].resize(FACTDIM);
-    bias.back().resize(OEXT);
 }
 
 void inline NeuralNet::initNNet()
@@ -50,20 +54,24 @@ NeuralNet::NeuralNet()
 
 void NeuralNet::think()
 {
-    for (int ct = 0; ct < activation.size() - 1; ct++)
+    for (int ct = 1; ct < activation.size() - 3; ct++)
     {
+        
         for (int ct1 = 0; ct1 < activation[ct].size(); ct1++)
         {
-            zValue[ct][ct1] = 0;
-            for (int ct2 = 0; ct2 < activation[ct - 1].size(); ct2++) zValue[ct][ct1] += activation[ct - 1][ct1] * weight[ct][ct2][ct1];
-            activation[ct][ct1] = actF(zValue[ct][ct1]) + bias[ct][ct1];
+            
+            zValue[ct + 1][ct1] = 0;
+            for (int ct2 = 0; ct2 < activation[ct + 1].size(); ct2++) {
+                zValue[ct + 1][ct1] += activation[ct][ct1] * weight[ct + 1][ct2][ct1];
+            }
+            activation[ct + 1][ct1] = actF(zValue[ct][ct1]) + bias[ct + 1][ct1];
         }
     }
-
+    cout << "|||||";
     for (int ct = 0; ct < OEXT; ct++)
     {
         zValue.back()[ct] = 0;
-        for (int ct1 = 0; ct1 < activation.back().size(); ct1++) zValue.back()[ct] += activation.back()[ct1] * weight.back()[ct][ct1];
+        for (int ct1 = 0; ct1 < activation.back().size(); ct1++) zValue.back()[ct] += activation[activation.size() - 2][ct1] * weight.back()[ct][ct1];
         activation.back()[ct] = sactF(zValue.back()[ct]) + bias.back()[ct];
     }
     int ctt = 0;
@@ -106,7 +114,7 @@ void NeuralNet::train()
         cout << (int)l;
         for (int ct = 0; ct < COLS; ct++)for (int ct1 = 0; ct1 < ROWS; ct1++) activation[0][ROWS * (ct1)+ct] = (float)(pixels[ROWS * (ct1)+ct]) / 255;
         think();
-        evaluate();
+        //evaluate();
 
         if(item_id > 59900) SDL_Delay(1000);
     }
@@ -117,7 +125,7 @@ void NeuralNet::train()
 void NeuralNet::evaluate()
 {
 
-    for (int ct = 0; ct < OEXT; ct++) goal[ct] = output[ct] - goal[ct];
+    for (int ct = 0; ct < OEXT; ct++) goal[ct] = activation.back()[ct] - goal[ct];
 
     for (int ct = 0; ct < activation.back().size(); ct++)
     {

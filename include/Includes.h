@@ -12,6 +12,7 @@
 
 using namespace std;
 
+
 const uint32_t ROWS = 28;
 const uint32_t COLS = 28;
 const int ZOOM = 30;
@@ -31,6 +32,7 @@ float inline lreLUD(float x) { return (x > 0) ? 0.1f : 1; }
 float inline reLU(float x) { return(max(0.0f, x)); }
 float inline reLUD(float x) { return (x > 0) ? 0 : 1; }
 float inline sigmoid(float x) { return (1 / (1 + exp(-x))); }
+
 float inline sigmoidD(float x) { float i = exp(x); return i / (1 + i) * (1 + i); }
 float inline tanhD(float x) { float i = 1 / cosh(x); return i * i; }
 
@@ -41,7 +43,7 @@ float inline sactFD(float x) { return(tanhD(x)); }
 
 float inline genWeight() { return ((((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018))) / 1018) / 2.5 - 1); }
 
-template<typename t> int inline max(vector<t> val) { //Returns the largest element of a vector
+template<typename t> int inline max(vector<t> val) {
     int m = 0;
     for (auto n : val) (n > m) ? m = n : m = m;
     return m;

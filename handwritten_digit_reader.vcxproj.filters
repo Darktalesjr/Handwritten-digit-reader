@@ -18,9 +18,6 @@
     <Library Include="dependencies\SDL2.lib">
       <Filter>Resource Files</Filter>
     </Library>
-    <Library Include="dependencies\SDL2_image.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
     <Library Include="dependencies\SDL2_ttf.lib">
       <Filter>Resource Files</Filter>
     </Library>

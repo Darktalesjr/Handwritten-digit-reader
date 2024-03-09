@@ -3,7 +3,7 @@
 void inline NeuralNet::initV()
 {
     activation.resize(FACTDEPTH + 2);
-    error.resize(FACTDEPTH);
+    error.resize(FACTDEPTH + 1);
     zValue.resize(FACTDEPTH + 1);
     bias.resize(FACTDEPTH + 1);
     weight.resize(FACTDEPTH + 1);
@@ -17,6 +17,7 @@ void inline NeuralNet::initV()
         if (ct == 0) for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[0][ct1].resize(IEXT);
         else for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[ct][ct1].resize(FACTDIM);
     }
+    error.back().resize(OEXT);
     activation.back().resize(OEXT);
     bias.back().resize(OEXT);
     zValue.back().resize(OEXT);
@@ -95,25 +96,22 @@ void NeuralNet::train()
 
 void NeuralNet::evaluate()
 {
-
-    for (int ct = 0; ct < OEXT; ct++) goal[ct] = 2 * (goal[ct] - activation.back()[ct]);
-
-    for (int ct = 0; ct < activation.back().size(); ct++) if (false)
+    for (int ct = 0; ct < activation.back().size(); ct++)
     {
-        error.back()[ct] = 0;
-        for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++)
-        {
-            error.back()[ct] += weight.back()[ct][ct1] * sactFD(zValue.back()[ct]) * goal[ct1];
-            weight.back()[ct][ct1] -= (1.0f / activation[activation.size() - 2].size()) * goal[ct] * activation[activation.size() - 2][ct] * sactFD(zValue[zValue.size() - 2][ct]);
-        }
+        error.back()[ct] = 2 * (goal[ct] - activation.back()[ct]);
+        for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++) error[error.size() - 2][ct1] += weight.back()[ct][ct1] * sactFD(zValue[zValue.size() - 2][ct1]) * error.back()[ct];
     }
-    for (int ct0 = activation.size() - 2; ct0 > 0; ct0--) for (int ct = 0; ct < activation[ct0].size(); ct++)
+
+    for (int ct = activation.size() - 3; ct > 0; ct--) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) for (int ct2 = 0; ct2 < activation[ct + 1].size(); ct2++)
     {
-        error.back()[ct] = 0;
-        for (int ct1 = 0; ct1 < activation[ct0 - 1].size(); ct1++)
-        {
-            error[ct0][ct] += weight[ct0 - 1][ct][ct1] * sactFD(zValue[ct0 - 1][ct]) * goal[ct1];
-            weight[ct0 - 1][ct][ct1] -= (1.0f / activation[ct0 - 1].size()) * goal[ct] * activation[ct0 - 1][ct] * sactFD(zValue[ct0 - 1][ct]);
-        }
+        error[ct][ct1] += weight[ct][ct2][ct1] * sactFD(zValue[ct][ct1]) * error[ct][ct2];
+    }
+
+
+    for (int ct = activation.size() - 3; ct >= 0; ct--) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) for (int ct2 = 0; ct2 < activation[ct + 1].size(); ct2++)
+    {
+        cout << weight[ct + 1].size() << " " << ct1 << " " << ct2 << endl;
+        cout << "e" << endl;
+        weight[ct + 1][ct1][ct2] -= sactFD(zValue[ct][ct2]) * error[ct1][ct2];
     }
 }

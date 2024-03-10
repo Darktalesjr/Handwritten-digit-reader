@@ -19,7 +19,7 @@ const int ZOOM = 30;
 const int ZOOM_ICON = 10;
 
 const int IEXT = ROWS * 28, OEXT = 10;
-const int FACTDIM = 16, FACTDEPTH = 2;
+const int FACTDIM = 16, FACTDEPTH = 4;
 const float LEARNING_RATE = 1.00f;
 
 const int WIDTH = ZOOM * COLS, HEIGHT = ZOOM * ROWS;

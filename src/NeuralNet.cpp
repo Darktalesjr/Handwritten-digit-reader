@@ -104,11 +104,16 @@ void NeuralNet::evaluate()
 
     for (int ct = activation.size() - 3; ct > 0; ct--) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) for (int ct2 = 0; ct2 < activation[ct + 1].size(); ct2++)
     {
-        error[ct][ct1] += weight[ct][ct2][ct1] * sactFD(zValue[ct][ct1]) * error[ct][ct2];
+        error[ct - 1][ct1] += weight[ct - 1][ct1][ct2] * actFD(zValue[ct - 1][ct1]) * error[ct][ct1];
     }
 
-    for (int ct = activation.size() - 1; ct > 0; ct--) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) for (int ct2 = 0; ct2 < activation[ct - 1].size(); ct2++)
+    for (int ct1 = 0; ct1 < activation.back().size(); ct1++) for (int ct2 = 0; ct2 < activation[activation.size() - 2].size(); ct2++)
     {
-        weight[ct - 1][ct1][ct2] -= sactFD(zValue[ct - 1][ct1]) * error[ct - 1][ct1];
+        weight.back()[ct1][ct2] -= sactFD(zValue[activation.size() - 3][ct1]) * error[activation.size() - 3][ct1] * LEARNING_RATE;
+    }
+
+    for (int ct = activation.size() - 2; ct > 0; ct--) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) for (int ct2 = 0; ct2 < activation[ct - 1].size(); ct2++)
+    {
+        weight[ct - 1][ct1][ct2] -= actFD(zValue[ct - 1][ct1]) * error[ct - 1][ct1] * LEARNING_RATE;
     }
 }

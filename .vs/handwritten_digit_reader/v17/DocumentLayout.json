@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:src\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNet.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:src\\NeuralNet.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -11,20 +15,16 @@
       "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:include\\Includes.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:src\\Source.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNetFunctions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:src\\NeuralNetFunctions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\NeuralNetFunctions.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:include\\NeuralNetFunctions.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\NeuralNet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:include\\NeuralNet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\NeuralNetFunctions.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:include\\NeuralNetFunctions.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNetFunctions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{344310DC-2D93-4EB8-A7C0-C2891138B47A}|handwritten_digit_reader.vcxproj|solutionrelative:src\\NeuralNetFunctions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,17 +34,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "NeuralNet.cpp",
               "DocumentMoniker": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNet.cpp",
               "RelativeDocumentMoniker": "src\\NeuralNet.cpp",
-              "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNet.cpp",
-              "RelativeToolTip": "src\\NeuralNet.cpp",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAAAF4AAABVAAAA",
+              "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNet.cpp*",
+              "RelativeToolTip": "src\\NeuralNet.cpp*",
+              "ViewState": "AQIAAEsAAAAAAAAAAAAAAGIAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-01-16T16:43:34.657Z",
               "IsPinned": true,
@@ -52,13 +52,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Source.cpp",
               "DocumentMoniker": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\Source.cpp",
               "RelativeDocumentMoniker": "src\\Source.cpp",
-              "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\Source.cpp",
-              "RelativeToolTip": "src\\Source.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAdAAAA",
+              "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\Source.cpp*",
+              "RelativeToolTip": "src\\Source.cpp*",
+              "ViewState": "AQIAABUAAAAAAAAAAAAAABMAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-01-16T16:43:34.712Z",
               "EditorCaption": ""
@@ -71,14 +71,14 @@
               "RelativeDocumentMoniker": "include\\NeuralNet.h",
               "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\NeuralNet.h",
               "RelativeToolTip": "include\\NeuralNet.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAQAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-01-16T16:43:34.624Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "NeuralNetFunctions.cpp",
               "DocumentMoniker": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\src\\NeuralNetFunctions.cpp",
               "RelativeDocumentMoniker": "src\\NeuralNetFunctions.cpp",
@@ -91,26 +91,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "NeuralNetFunctions.h",
               "DocumentMoniker": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\NeuralNetFunctions.h",
               "RelativeDocumentMoniker": "include\\NeuralNetFunctions.h",
               "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\NeuralNetFunctions.h",
               "RelativeToolTip": "include\\NeuralNetFunctions.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-01-16T16:43:34.632Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Includes.h",
               "DocumentMoniker": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\Includes.h",
               "RelativeDocumentMoniker": "include\\Includes.h",
-              "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\Includes.h",
-              "RelativeToolTip": "include\\Includes.h",
-              "ViewState": "AQIAABQAAAAAAAAAAAAIwBkAAAAgAAAA",
+              "ToolTip": "C:\\Users\\nicol\\source\\repos\\handwritten_digit_reader\\include\\Includes.h*",
+              "RelativeToolTip": "include\\Includes.h*",
+              "ViewState": "AQIAABYAAAAAAAAAAADwvx8AAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-01-16T16:43:34.71Z",
               "EditorCaption": ""

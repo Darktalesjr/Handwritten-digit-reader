@@ -1,2 +1,5 @@
 ﻿  NeuralNet.cpp
+  NeuralNetFunctions.cpp
+  Source.cpp
+  Generating Code...
   handwritten_digit_reader.vcxproj -> C:\Users\nicol\source\repos\handwritten_digit_reader\x64\Debug\handwritten_digit_reader.exe

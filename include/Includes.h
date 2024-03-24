@@ -45,7 +45,11 @@ float inline actFD(float x) { return(lreLUD(x)); }
 float inline sactF(float x) { return(tanh(x)); }
 float inline sactFD(float x) { return(tanhD(x)); }
 
-float inline genWeight() { return ((((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018))) / 1018) / 2.5 - 1); }
+float inline genWeight(int fanIn, int fanOut) {
+    float variance = 2.0 / (fanIn + fanOut);
+    float stddev = sqrt(variance);
+    return stddev * (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018)) / 1018) / 2.5 - 1);
+}
 
 
 template<typename t> int inline max(vector<t> val) {

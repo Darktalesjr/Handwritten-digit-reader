@@ -1,3 +1,0 @@
-C:\Users\gcrov\source\repos\handwritten_digit_reader\x64\Debug\handwritten_digit_reader.exe
-C:\Users\n.drammis\source\repos\handwritten_digit_reader\x64\Debug\handwritten_digit_reader.exe
-C:\Users\nicol\source\repos\handwritten_digit_reader\x64\Debug\handwritten_digit_reader.exe

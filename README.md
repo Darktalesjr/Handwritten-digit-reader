@@ -15,7 +15,7 @@ The MNIST dataset consists of 28x28 pixel grayscale images of handwritten digits
 The neural network architecture used for this task consists of:
 
 - Input layer: 784 neurons (28x28 pixels)
-- Hidden layer(s): [Specify number and size of hidden layers]
+- Hidden layer(s): 2 layers with 16 neurons each.
 - Output layer: 10 neurons (corresponding to digits 0-9)
 
 TODO: Add details about activation functions, loss function, optimizer, etc.

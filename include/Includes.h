@@ -6,6 +6,9 @@
 #include <vector>
 #include <string>
 #include <thread>
+#include <numeric>
+#include <cmath>
+#include <random>
 
 #include "SDL_ttf.h"
 #include "SDL.h"
@@ -18,9 +21,10 @@ const uint32_t COLS = 28;
 const int ZOOM = 30;
 const int ZOOM_ICON = 10;
 
-const int IEXT = ROWS * 28, OEXT = 10;
-const int FACTDIM = 16, FACTDEPTH = 4;
-const float LEARNING_RATE = 0.100f;
+const int IEXT = ROWS * COLS, OEXT = 10;
+const int FACTDIM = 16, FACTDEPTH = 2;
+const float LEARNING_RATE = 0.01f;
+const int GROUP_SIZE = 10;
 
 const int WIDTH = ZOOM * COLS, HEIGHT = ZOOM * ROWS;
 const int WID = WIDTH / 2, HEI = HEIGHT / 2;
@@ -42,6 +46,7 @@ float inline sactF(float x) { return(tanh(x)); }
 float inline sactFD(float x) { return(tanhD(x)); }
 
 float inline genWeight() { return ((((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018))) / 1018) / 2.5 - 1); }
+
 
 template<typename t> int inline max(vector<t> val) {
     int m = 0;

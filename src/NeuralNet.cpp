@@ -30,7 +30,7 @@ void inline NeuralNet::initNNet()
 {
     for (int ct = 0; ct < activation.size(); ct++) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) activation[ct][ct1] = 0;
     for (int ct = 0; ct < bias.size(); ct++) for (int ct1 = 0; ct1 < bias[ct].size(); ct1++) bias[ct][ct1] = 0;
-    for (int ct = 0; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = genWeight((ct == 0) ? IEXT : FACTDIM, (ct == weight.size() - 1) ? OEXT : FACTDIM);
+    for (int ct = 0; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = (ct == weight.size() - 1) ? genWeight((ct == 0) ? IEXT : FACTDIM, FACTDIM) : genWeight(FACTDIM, OEXT);
 }
 
 void NeuralNet::copyNet(NeuralNet source)
@@ -55,14 +55,14 @@ void NeuralNet::think()
             for (int ct2 = 0; ct2 < activation[ct - 1].size(); ct2++) {
                 zValue[ct - 1][ct1] += activation[ct - 1][ct2] * weight[ct - 1][ct1][ct2];
             }
-            activation[ct][ct1] = actF(zValue[ct - 1][ct1]) + bias[ct - 1][ct1];
+            activation[ct][ct1] = actF(zValue[ct - 1][ct1] + bias[ct - 1][ct1]);
         }
     }
     for (int ct = 0; ct < OEXT; ct++)
     {
         zValue.back()[ct] = 0;
         for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++) zValue.back()[ct] += activation[activation.size() - 2][ct1] * weight.back()[ct][ct1];
-        activation.back()[ct] = sactF(zValue.back()[ct]) + bias.back()[ct];
+        activation.back()[ct] = sactF(zValue.back()[ct] + bias.back()[ct]);
     }
     int ctt = 0;
     for (int ct = 0; ct < OEXT; ct++)if(activation.back()[ct] > activation.back()[ctt]) ctt = ct;
@@ -91,7 +91,7 @@ void NeuralNet::train()
             descent();
         }
         else evaluate();
-        cout << item_id << endl;
+        //cout << item_id << endl;
         if (!(activation.back().back() == activation.back().back()))SDL_Delay(10000);
         //if (item_id > 5990) SDL_Delay(1000);
 
@@ -106,26 +106,31 @@ void inline NeuralNet::evaluate()
 
 void inline NeuralNet::descent()
 {
-    for (int ct = 0; ct < error.back().size(); ct++) error.back()[ct] /= GROUP_SIZE;
-    for (int ct = 0; ct < error.size() - 1; ct++) for (int ct1 = 0; ct1 < error[ct].size(); ct1++) error[ct][ct1] = 0;
+    for (int ct = 0; ct < error.back().size(); ct++)
+        error.back()[ct] /= GROUP_SIZE;
+    for (int ct = 0; ct < error.size() - 1; ct++) 
+        for (int ct1 = 0; ct1 < error[ct].size(); ct1++) 
+            error[ct][ct1] = 0;
     for (int ct = 0; ct < activation.back().size(); ct++)
+        for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++) 
+            error[error.size() - 2][ct1] += weight.back()[ct][ct1] * sactFD(activation.back()[ct]) * activation[activation.size() - 2][ct1];
+    for (int ct = 0; ct < activation.back().size(); ct++)
+        for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++) 
+            weight.back()[ct][ct1] -= error.back()[ct] * sactFD(activation.back()[ct]) * activation[activation.size() - 2][ct1] * LEARNING_RATE;
+    for (int ct0 = activation.size() - 3; ct0 > 0; ct0--) 
     {
-        for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++) error[error.size() - 2][ct1] += weight.back()[ct][ct1] * sactFD(activation.back()[ct]) * activation[activation.size() - 2][ct1];
-        for (int ct1 = 0; ct1 < activation[activation.size() - 2].size(); ct1++) weight.back()[ct][ct1] -= error.back()[ct] * sactFD(activation.back()[ct]) * activation[activation.size() - 2][ct1] * LEARNING_RATE;
-    }
-    for (int ct0 = activation.size() - 3; ct0 > 0; ct0--)for (int ct = 0; ct < activation[ct0 + 1].size(); ct++)
-    {
-        for (int ct1 = 0; ct1 < activation[ct0].size(); ct1++) error[ct0 - 1][ct1] += weight[ct0][ct][ct1] * actFD(activation[ct0 + 1][ct]) * activation[ct0][ct1];
-        for (int ct1 = 0; ct1 < activation[ct0].size(); ct1++) weight[ct0][ct][ct1] -= error[ct0][ct] * actFD(activation[ct0 + 1][ct]) * activation[ct0][ct1] * LEARNING_RATE;
+        for (int ct = 0; ct < activation[ct0 + 1].size(); ct++)
+            for (int ct1 = 0; ct1 < activation[ct0].size(); ct1++) 
+                error[ct0 - 1][ct1] += weight[ct0][ct][ct1] * actFD(activation[ct0 + 1][ct]) * activation[ct0][ct1];
+        for (int ct = 0; ct < activation[ct0 + 1].size(); ct++)
+            for (int ct1 = 0; ct1 < activation[ct0].size(); ct1++)
+                weight[ct0][ct][ct1] -= error[ct0][ct] * actFD(activation[ct0 + 1][ct]) * activation[ct0][ct1] * LEARNING_RATE;
     }
     for (int ct = 0; ct < weight[0].size(); ct++)
-    {
-        for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) weight[0][ct][ct1] -= error[0][ct] * actFD(activation[1][ct]) * activation[0][ct1] * LEARNING_RATE;
-    }
+        for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) 
+            weight[0][ct][ct1] -= error[0][ct] * actFD(activation[1][ct]) * activation[0][ct1] * LEARNING_RATE;
+    cout << weight[1][0][0] << endl;
 }
-
-
-
 
 
 

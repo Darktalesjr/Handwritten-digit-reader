@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 #include <thread>
-#include <numeric>
-#include <cmath>
 #include <random>
 
 #include "SDL_ttf.h"
@@ -22,7 +20,7 @@ const int ZOOM = 30;
 const int ZOOM_ICON = 10;
 
 const int IEXT = ROWS * COLS, OEXT = 10;
-const int FACTDIM = 16, FACTDEPTH = 2;
+const int FACTDIM = 1, FACTDEPTH = 2;
 const float LEARNING_RATE = 0.01f;
 const int GROUP_SIZE = 10;
 
@@ -45,10 +43,19 @@ float inline actFD(float x) { return(lreLUD(x)); }
 float inline sactF(float x) { return(tanh(x)); }
 float inline sactFD(float x) { return(tanhD(x)); }
 
+static random_device rd;
+static mt19937 gen(rd());
+
 float inline genWeight(int fanIn, int fanOut) {
-    float variance = 2.0 / (fanIn + fanOut);
-    float stddev = sqrt(variance);
-    return stddev * (((float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018) + float(rand() % 1018)) / 1018) / 2.5 - 1);
+    float stddev = sqrt(1.0 / (fanIn));
+    std::normal_distribution<float> d(0, stddev);
+    return d(gen);
+}
+
+float inline genWeightO(int fanIn, int fanOut) {
+    float stddev = sqrt(2.0 / (fanIn + fanOut));
+    std::normal_distribution<float> d(0, stddev);
+    return d(gen);
 }
 
 

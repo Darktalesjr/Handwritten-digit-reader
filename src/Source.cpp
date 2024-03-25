@@ -16,7 +16,6 @@ int main(int argc, char* argv[])
 
     SDL_Event event;
 
-
     bool running = true, i = false;
 
     NeuralNet* net = new NeuralNet();

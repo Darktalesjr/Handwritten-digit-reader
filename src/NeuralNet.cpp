@@ -15,22 +15,34 @@ void inline NeuralNet::initV()
         zValue[ct].resize(FACTDIM);
         bias[ct].resize(FACTDIM);
         weight[ct].resize(FACTDIM);
-        if (ct == 0) for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[0][ct1].resize(IEXT);
-        else for (int ct1 = 0; ct1 < FACTDIM; ct1++) weight[ct][ct1].resize(FACTDIM);
+        if (ct == 0) 
+            for (int ct1 = 0; ct1 < FACTDIM; ct1++) 
+                weight[0][ct1].resize(IEXT);
+        else 
+            for (int ct1 = 0; ct1 < FACTDIM; ct1++) 
+                weight[ct][ct1].resize(FACTDIM);
     }
     error.back().resize(OEXT);
     activation.back().resize(OEXT);
     bias.back().resize(OEXT);
     zValue.back().resize(OEXT);
     weight.back().resize(OEXT);
-    for (int ct1 = 0; ct1 < OEXT; ct1++) weight.back()[ct1].resize(FACTDIM);
+    for (int ct1 = 0; ct1 < OEXT; ct1++) 
+        weight.back()[ct1].resize(FACTDIM);
 }
 
 void inline NeuralNet::initNNet()
 {
-    for (int ct = 0; ct < activation.size(); ct++) for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) activation[ct][ct1] = 0;
-    for (int ct = 0; ct < bias.size(); ct++) for (int ct1 = 0; ct1 < bias[ct].size(); ct1++) bias[ct][ct1] = 0;
-    for (int ct = 0; ct < weight.size(); ct++) for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) weight[ct][ct1][ct2] = (ct == weight.size() - 1) ? genWeight((ct == 0) ? IEXT : FACTDIM, FACTDIM) : genWeight(FACTDIM, OEXT);
+    for (int ct = 0; ct < activation.size(); ct++) 
+        for (int ct1 = 0; ct1 < activation[ct].size(); ct1++) 
+            activation[ct][ct1] = 0;
+    for (int ct = 0; ct < bias.size(); ct++) 
+        for (int ct1 = 0; ct1 < bias[ct].size(); ct1++) 
+            bias[ct][ct1] = 0;
+    for (int ct = 0; ct < weight.size(); ct++) 
+        for (int ct1 = 0; ct1 < weight[ct].size(); ct1++) 
+            for (int ct2 = 0; ct2 < weight[ct][ct1].size(); ct2++) 
+                weight[ct][ct1][ct2] = (ct == weight.size() - 1) ? genWeight((ct == 0) ? IEXT : FACTDIM, FACTDIM) : genWeightO(FACTDIM, OEXT);
 }
 
 void NeuralNet::copyNet(NeuralNet source)
@@ -129,7 +141,6 @@ void inline NeuralNet::descent()
     for (int ct = 0; ct < weight[0].size(); ct++)
         for (int ct1 = 0; ct1 < weight[0][ct].size(); ct1++) 
             weight[0][ct][ct1] -= error[0][ct] * actFD(activation[1][ct]) * activation[0][ct1] * LEARNING_RATE;
-    cout << weight[1][0][0] << endl;
 }
 
 

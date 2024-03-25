@@ -20,7 +20,7 @@ const int ZOOM = 30;
 const int ZOOM_ICON = 10;
 
 const int IEXT = ROWS * COLS, OEXT = 10;
-const int FACTDIM = 1, FACTDEPTH = 2;
+const int FACTDIM = 16, FACTDEPTH = 2;
 const float LEARNING_RATE = 0.01f;
 const int GROUP_SIZE = 10;
 

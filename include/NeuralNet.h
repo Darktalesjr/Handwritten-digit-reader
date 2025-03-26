@@ -11,12 +11,11 @@ struct NeuralNet
     vector<vector<float>> bias;
     vector<vector<vector<float>>> weight;
 
-    void think();
-    void train();
-    void evaluate();
+    void inline think();
+    void train(bool *running);
+    void inline evaluate();
     void inline descent();
     void inline initV();
     void inline initNNet();
-    void inline copyNet(NeuralNet source);
     NeuralNet();
 };

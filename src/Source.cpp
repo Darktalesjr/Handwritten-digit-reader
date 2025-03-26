@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     bool running = true, i = false;
 
     NeuralNet* net = new NeuralNet();
-    thread trainThread(&NeuralNet::train, net);
+    thread trainThread(&NeuralNet::train, net, &running);
 
     while (running) {
 
@@ -34,8 +34,7 @@ int main(int argc, char* argv[])
                 case SDL_WINDOWEVENT_RESIZED:
                     break;
                 case SDL_WINDOWEVENT_CLOSE:
-                    if (SDL_GetWindowFromID(event.window.windowID) == window) running = false;
-                    else SDL_HideWindow(SDL_GetWindowFromID(event.window.windowID));
+                    running = false;
                     break;
                 }
             }

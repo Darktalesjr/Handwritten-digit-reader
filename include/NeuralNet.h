@@ -10,6 +10,8 @@ struct NeuralNet
     vector<vector<float>> error;
     vector<vector<float>> bias;
     vector<vector<vector<float>>> weight;
+	vector<float> cost;
+	bool isTrained = false;
 
     void inline think();
     void train(bool *running);
@@ -17,5 +19,6 @@ struct NeuralNet
     void inline descent();
     void inline initV();
     void inline initNNet();
+    void sandbox(bool *running);
     NeuralNet();
 };

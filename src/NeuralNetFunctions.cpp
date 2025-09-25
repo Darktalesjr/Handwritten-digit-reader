@@ -50,7 +50,8 @@ void renderDrawNet(SDL_Renderer* renderer, NeuralNet* net, TTF_Font* font)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD) ;
+    SDL_Rect renderRect;
 
 
     for (int ct0 = 2; ct0 < net->activation.size(); ct0++) for (int ct = 0; ct < net->activation[ct0].size(); ct++) for (int ct1 = 0; ct1 < net->activation[ct0 - 1].size(); ct1++) {
@@ -60,16 +61,18 @@ void renderDrawNet(SDL_Renderer* renderer, NeuralNet* net, TTF_Font* font)
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    renderRect = { (wDiff * 3 - ZOOM_ICON * ROWS) / 2 - 1, HEI - ZOOM_ICON * ROWS / 2 - 1, ZOOM_ICON * ROWS+2, ZOOM_ICON * COLS+2};
+	SDL_RenderDrawRect(renderer,&renderRect);
+
     for (int ct = 0; ct < ROWS; ct++) for (int ct1 = 0; ct1 < COLS; ct1++) {
         SDL_SetRenderDrawColor(renderer, net->activation[0][ct * ROWS + ct1] * 255, net->activation[0][ct * ROWS + ct1] * 255, net->activation[0][ct * ROWS + ct1] * 255, 255);
         for (int ct2 = 0; ct2 < ZOOM_ICON; ct2++)for (int ct3 = 0; ct3 < ZOOM_ICON; ct3++) SDL_RenderDrawPoint(renderer, ct1 * ZOOM_ICON + ct2 + (wDiff * 3 - ZOOM_ICON * ROWS) / 2, ct * ZOOM_ICON + ct3 + HEI - ZOOM_ICON * ROWS / 2);
     }
-
     string source;
     SDL_Surface* surfaceMessage;
     SDL_Texture* text;
     const char* sourcePtr = source.c_str();
-    SDL_Rect messageRect;
     int w = 0, h = 0;
 
     for (int ct = 1; ct < net->activation.size(); ct++)for (int ct1 = 0; ct1 < net->activation[ct].size(); ct1++)
@@ -85,8 +88,8 @@ void renderDrawNet(SDL_Renderer* renderer, NeuralNet* net, TTF_Font* font)
         surfaceMessage = TTF_RenderText_Solid(font, sourcePtr, WHITE);
         text = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-        messageRect = { wDiff * (ct + 2) - w / 2, int((ct1 - (net->activation[ct].size() / 2.0f)) * hDiff) + HEI + (hDiff / 2) - h / 2 ,w,h };
-        SDL_RenderCopy(renderer, text, NULL, &messageRect);
+        renderRect = { wDiff * (ct + 2) - w / 2, int((ct1 - (net->activation[ct].size() / 2.0f)) * hDiff) + HEI + (hDiff / 2) - h / 2 ,w,h };
+        SDL_RenderCopy(renderer, text, NULL, &renderRect);
         SDL_FreeSurface(surfaceMessage);
         SDL_DestroyTexture(text);
     }

@@ -13,14 +13,14 @@
 
 using namespace std;
 
-const uint32_t ROWS = 28;
-const uint32_t COLS = 28;
+const int ROWS = 28;
+const int COLS = 28;
 const int ZOOM = 30;
 const int ZOOM_ICON = 10;
 
 const int IEXT = ROWS * COLS, OEXT = 10;
 const int FACTDIM = 16, FACTDEPTH = 2;
-const float LEARNING_RATE = 0.1f;
+const float LEARNING_RATE = 0.05f;
 const int GROUP_SIZE = 1;
 
 const int WIDTH = ZOOM * COLS, HEIGHT = ZOOM * ROWS;
@@ -34,11 +34,11 @@ float inline reLU(float x) { return(max(0.0f, x)); }
 float inline reLUD(float x) { return (x > 0) ? 1 : 0; }
 float inline sigmoid(float x) { return (1 / (1 + exp(-x))); }
 
-float inline sigmoidD(float x) { float i = exp(x); return i / (1 + i) * (1 + i); }
+float inline sigmoidD(float x) { float s = sigmoid(x); return s * (1 - s); }
 float inline tanhD(float x) { float i = 1 / cosh(x); return i * i; }
 
-float inline actF(float x) { return(sigmoid(x)); }
-float inline actFD(float x) { return(sigmoidD(x)); }
+float inline actF(float x) { return(lreLU(x)); }
+float inline actFD(float x) { return(lreLUD(x)); }
 float inline sactF(float x) { return(sigmoid(x)); }
 float inline sactFD(float x) { return(sigmoidD(x)); }
 

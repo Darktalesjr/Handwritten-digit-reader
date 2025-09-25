@@ -16,13 +16,14 @@ int main(int argc, char* argv[])
 
     SDL_Event event;
 
-    bool running = true, i = false;
+    bool running = true;
 
     NeuralNet* net = new NeuralNet();
     thread trainThread(&NeuralNet::train, net, &running);
+	thread sandboxThread(&NeuralNet::sandbox, net, &running);
 
-    while (running) {
-
+    while (running)
+    {
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -30,7 +31,8 @@ int main(int argc, char* argv[])
             case SDL_QUIT:
                 running = false;
             case SDL_WINDOWEVENT:
-                switch (event.window.event) {
+                switch (event.window.event)
+                {
                 case SDL_WINDOWEVENT_RESIZED:
                     break;
                 case SDL_WINDOWEVENT_CLOSE:
@@ -39,10 +41,11 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        renderDrawNet(renderer, net, font);
-        //cout << "-------------------------------------------------------------------------------------------------------------------\n";
+
+        if(net->isTrained)renderDrawNet(renderer, net, font);
     }
-    trainThread.join();
+	trainThread.join();
+	sandboxThread.join();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
